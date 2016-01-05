@@ -2,4 +2,5 @@ classpath
 .gitignore.swp
 .project
 .classpath
+.gitignore
 Compiler2IDE/bin/.gitignore
