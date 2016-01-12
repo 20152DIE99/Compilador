@@ -1,25 +1,30 @@
 package grammar;
 
-public class NodeAnnotedTree {
+public class AnnotatedTreeNode {
 //	Fields
-	private String type;
-	private Object valor;
+	private DataType type;
+	private Object value;
 	
-	public NodeAnnotedTree() {
+	public AnnotatedTreeNode() {
 		super();
+	}
+	public AnnotatedTreeNode(DataType type, Object value){
+		super();
+		this.type = type;
+		this.value = value;
 	}
 	
 //	Getters and Setters
-	public String getType() {
+	public DataType getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(DataType type) {
 		this.type = type;
 	}
-	public Object getValor() {
-		return valor;
+	public Object getValue() {
+		return value;
 	}
-	public void setValor(Object valor) {
-		this.valor = valor;
+	public void setValue(Object value) {
+		this.value = value;
 	}	
 }

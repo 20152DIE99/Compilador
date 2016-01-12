@@ -1,6 +1,5 @@
+// Generated from /home/rafael/workspace/Compiladores/Compiler2IDE/src/grammar/simpleJava.g4 by ANTLR 4.1
 package grammar;
-// Generated from /Users/laercioag/Documents/Grammars/simpleJava/simpleJava.g4 by ANTLR 4.1
-
    import java.util.*;
 
 
@@ -15,6 +14,19 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * of the available methods.
  */
 public class simpleJavaBaseListener implements simpleJavaListener {
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterFloat(@NotNull simpleJavaParser.FloatContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitFloat(@NotNull simpleJavaParser.FloatContext ctx) { }
+
 	/**
 	 * {@inheritDoc}
 	 * <p/>
@@ -85,13 +97,39 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterExpr(@NotNull simpleJavaParser.ExprContext ctx) { }
+	@Override public void enterAddSub(@NotNull simpleJavaParser.AddSubContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitExpr(@NotNull simpleJavaParser.ExprContext ctx) { }
+	@Override public void exitAddSub(@NotNull simpleJavaParser.AddSubContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterBracket(@NotNull simpleJavaParser.BracketContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitBracket(@NotNull simpleJavaParser.BracketContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterFunctionCall(@NotNull simpleJavaParser.FunctionCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitFunctionCall(@NotNull simpleJavaParser.FunctionCallContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -118,6 +156,19 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitPrint(@NotNull simpleJavaParser.PrintContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterMultDiv(@NotNull simpleJavaParser.MultDivContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitMultDiv(@NotNull simpleJavaParser.MultDivContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -196,6 +247,32 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitRead(@NotNull simpleJavaParser.ReadContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterId(@NotNull simpleJavaParser.IdContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitId(@NotNull simpleJavaParser.IdContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterInt(@NotNull simpleJavaParser.IntContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitInt(@NotNull simpleJavaParser.IntContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

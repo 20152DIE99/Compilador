@@ -1,6 +1,5 @@
+// Generated from /home/rafael/workspace/Compiladores/Compiler2IDE/src/grammar/simpleJava.g4 by ANTLR 4.1
 package grammar;
-// Generated from /Users/laercioag/Documents/Grammars/simpleJava/simpleJava.g4 by ANTLR 4.1
-
    import java.util.*;
 
 import org.antlr.v4.runtime.misc.NotNull;
@@ -11,6 +10,17 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  * {@link simpleJavaParser}.
  */
 public interface simpleJavaListener extends ParseTreeListener {
+	/**
+	 * Enter a parse tree produced by {@link simpleJavaParser#Float}.
+	 * @param ctx the parse tree
+	 */
+	void enterFloat(@NotNull simpleJavaParser.FloatContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link simpleJavaParser#Float}.
+	 * @param ctx the parse tree
+	 */
+	void exitFloat(@NotNull simpleJavaParser.FloatContext ctx);
+
 	/**
 	 * Enter a parse tree produced by {@link simpleJavaParser#declReturn}.
 	 * @param ctx the parse tree
@@ -67,15 +77,37 @@ public interface simpleJavaListener extends ParseTreeListener {
 	void exitExpr2(@NotNull simpleJavaParser.Expr2Context ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link simpleJavaParser#expr}.
+	 * Enter a parse tree produced by {@link simpleJavaParser#AddSub}.
 	 * @param ctx the parse tree
 	 */
-	void enterExpr(@NotNull simpleJavaParser.ExprContext ctx);
+	void enterAddSub(@NotNull simpleJavaParser.AddSubContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link simpleJavaParser#expr}.
+	 * Exit a parse tree produced by {@link simpleJavaParser#AddSub}.
 	 * @param ctx the parse tree
 	 */
-	void exitExpr(@NotNull simpleJavaParser.ExprContext ctx);
+	void exitAddSub(@NotNull simpleJavaParser.AddSubContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link simpleJavaParser#Bracket}.
+	 * @param ctx the parse tree
+	 */
+	void enterBracket(@NotNull simpleJavaParser.BracketContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link simpleJavaParser#Bracket}.
+	 * @param ctx the parse tree
+	 */
+	void exitBracket(@NotNull simpleJavaParser.BracketContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link simpleJavaParser#FunctionCall}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionCall(@NotNull simpleJavaParser.FunctionCallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link simpleJavaParser#FunctionCall}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionCall(@NotNull simpleJavaParser.FunctionCallContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link simpleJavaParser#declConst}.
@@ -98,6 +130,17 @@ public interface simpleJavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPrint(@NotNull simpleJavaParser.PrintContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link simpleJavaParser#MultDiv}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultDiv(@NotNull simpleJavaParser.MultDivContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link simpleJavaParser#MultDiv}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultDiv(@NotNull simpleJavaParser.MultDivContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link simpleJavaParser#prog}.
@@ -164,6 +207,28 @@ public interface simpleJavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitRead(@NotNull simpleJavaParser.ReadContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link simpleJavaParser#Id}.
+	 * @param ctx the parse tree
+	 */
+	void enterId(@NotNull simpleJavaParser.IdContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link simpleJavaParser#Id}.
+	 * @param ctx the parse tree
+	 */
+	void exitId(@NotNull simpleJavaParser.IdContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link simpleJavaParser#Int}.
+	 * @param ctx the parse tree
+	 */
+	void enterInt(@NotNull simpleJavaParser.IntContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link simpleJavaParser#Int}.
+	 * @param ctx the parse tree
+	 */
+	void exitInt(@NotNull simpleJavaParser.IntContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link simpleJavaParser#cmdwhile}.

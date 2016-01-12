@@ -1,6 +1,5 @@
+// Generated from /home/rafael/workspace/Compiladores/Compiler2IDE/src/grammar/simpleJava.g4 by ANTLR 4.1
 package grammar;
-// Generated from /Users/laercioag/Documents/Grammars/simpleJava/simpleJava.g4 by ANTLR 4.1
-
    import java.util.*;
 
 import org.antlr.v4.runtime.misc.NotNull;
@@ -14,6 +13,13 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  * operations with no return type.
  */
 public interface simpleJavaVisitor<T> extends ParseTreeVisitor<T> {
+	/**
+	 * Visit a parse tree produced by {@link simpleJavaParser#Float}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFloat(@NotNull simpleJavaParser.FloatContext ctx);
+
 	/**
 	 * Visit a parse tree produced by {@link simpleJavaParser#declReturn}.
 	 * @param ctx the parse tree
@@ -50,11 +56,25 @@ public interface simpleJavaVisitor<T> extends ParseTreeVisitor<T> {
 	T visitExpr2(@NotNull simpleJavaParser.Expr2Context ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link simpleJavaParser#expr}.
+	 * Visit a parse tree produced by {@link simpleJavaParser#AddSub}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExpr(@NotNull simpleJavaParser.ExprContext ctx);
+	T visitAddSub(@NotNull simpleJavaParser.AddSubContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link simpleJavaParser#Bracket}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBracket(@NotNull simpleJavaParser.BracketContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link simpleJavaParser#FunctionCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionCall(@NotNull simpleJavaParser.FunctionCallContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link simpleJavaParser#declConst}.
@@ -69,6 +89,13 @@ public interface simpleJavaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPrint(@NotNull simpleJavaParser.PrintContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link simpleJavaParser#MultDiv}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultDiv(@NotNull simpleJavaParser.MultDivContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link simpleJavaParser#prog}.
@@ -111,6 +138,20 @@ public interface simpleJavaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitRead(@NotNull simpleJavaParser.ReadContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link simpleJavaParser#Id}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitId(@NotNull simpleJavaParser.IdContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link simpleJavaParser#Int}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInt(@NotNull simpleJavaParser.IntContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link simpleJavaParser#cmdwhile}.

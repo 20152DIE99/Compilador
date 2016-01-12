@@ -1,11 +1,16 @@
 package grammar;
 
+import java.util.IdentityHashMap;
+
+import org.antlr.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import compileride.CompilerIDE;
+import grammar.simpleJavaParser.AddSubContext;
 import grammar.simpleJavaParser.AtribuicaoContext;
+import grammar.simpleJavaParser.BracketContext;
 import grammar.simpleJavaParser.ChamadaFuncoesContext;
 import grammar.simpleJavaParser.CmdforContext;
 import grammar.simpleJavaParser.CmdifelseContext;
@@ -16,7 +21,11 @@ import grammar.simpleJavaParser.DeclFuncoesContext;
 import grammar.simpleJavaParser.DeclReturnContext;
 import grammar.simpleJavaParser.DeclVarsContext;
 import grammar.simpleJavaParser.Expr2Context;
-import grammar.simpleJavaParser.ExprContext;
+import grammar.simpleJavaParser.FloatContext;
+import grammar.simpleJavaParser.FunctionCallContext;
+import grammar.simpleJavaParser.IdContext;
+import grammar.simpleJavaParser.IntContext;
+import grammar.simpleJavaParser.MultDivContext;
 import grammar.simpleJavaParser.PrincipalContext;
 import grammar.simpleJavaParser.PrintContext;
 import grammar.simpleJavaParser.ProgContext;
@@ -27,11 +36,37 @@ public class simpleJavaActions extends simpleJavaBaseListener {
 
 	CompilerIDE ide;
 	simpleJavaParser parser;
+	private IdentityHashMap<ParserRuleContext, AnnotatedTreeNode> values = 
+			new IdentityHashMap<ParserRuleContext, AnnotatedTreeNode>(); 
+	
+	//Getter and setter methods for the annotedTree informations	
+	/**
+	 * @return 
+	 */
+	public AnnotatedTreeNode getValue(ParserRuleContext node) {
+		return this.values.get(node);
+	}
+	
+	public void setValue(ParserRuleContext node, AnnotatedTreeNode annotedNode) {
+		this.values.put(node, annotedNode);
+	}	
 	
 	public simpleJavaActions(CompilerIDE ide, simpleJavaParser parser) {
 		super();
 		this.ide = ide;
 		this.parser = parser;
+	}
+
+	@Override
+	public void enterFloat(FloatContext ctx) {
+		// TODO Auto-generated method stub
+		super.enterFloat(ctx);
+	}
+
+	@Override
+	public void exitFloat(FloatContext ctx) {
+		// TODO Auto-generated method stub
+		super.exitFloat(ctx);
 	}
 
 	@Override
@@ -95,15 +130,27 @@ public class simpleJavaActions extends simpleJavaBaseListener {
 	}
 
 	@Override
-	public void enterExpr(ExprContext ctx) {
+	public void enterBracket(BracketContext ctx) {
 		// TODO Auto-generated method stub
-		super.enterExpr(ctx);
+		super.enterBracket(ctx);
 	}
 
 	@Override
-	public void exitExpr(ExprContext ctx) {
+	public void exitBracket(BracketContext ctx) {
 		// TODO Auto-generated method stub
-		super.exitExpr(ctx);
+		super.exitBracket(ctx);
+	}
+
+	@Override
+	public void enterFunctionCall(FunctionCallContext ctx) {
+		// TODO Auto-generated method stub
+		super.enterFunctionCall(ctx);
+	}
+
+	@Override
+	public void exitFunctionCall(FunctionCallContext ctx) {
+		// TODO Auto-generated method stub
+		super.exitFunctionCall(ctx);
 	}
 
 	@Override
@@ -203,6 +250,34 @@ public class simpleJavaActions extends simpleJavaBaseListener {
 	}
 
 	@Override
+	public void enterId(IdContext ctx) {
+		// TODO Auto-generated method stub
+		super.enterId(ctx);
+	}
+
+	@Override
+	public void exitId(IdContext ctx) {
+		// TODO Auto-generated method stub
+		super.exitId(ctx);
+	}
+
+	@Override
+	public void enterInt(IntContext ctx) {
+		// TODO Auto-generated method stub
+		super.enterInt(ctx);
+	}
+
+	@Override
+	public void exitInt(IntContext ctx) {
+		// TODO Auto-generated method stub
+		super.exitInt(ctx);
+		AnnotatedTreeNode annotedNode = 
+				new AnnotatedTreeNode(DataType.INT, Integer.parseInt(ctx.getText()));
+		//TODO
+		this.setValue(ctx, annotedNode);
+	}
+
+	@Override
 	public void enterCmdwhile(CmdwhileContext ctx) {
 		// TODO Auto-generated method stub
 		super.enterCmdwhile(ctx);
@@ -261,5 +336,52 @@ public class simpleJavaActions extends simpleJavaBaseListener {
 		// TODO Auto-generated method stub
 		super.visitErrorNode(node);
 	}
-	
+
+	@Override
+	public void enterAddSub(AddSubContext ctx) {
+		// TODO Auto-generated method stub
+		super.enterAddSub(ctx);
+	}
+
+	@Override
+	public void exitAddSub(AddSubContext ctx) {
+		// TODO Auto-generated method stub
+		super.exitAddSub(ctx);
+		// TODO observar casos Float e INT e os procedimentos a fazer
+		AnnotatedTreeNode left =  getValue(ctx.expr(0));
+		AnnotatedTreeNode right =  getValue(ctx.expr(1));
+		AnnotatedTreeNode ctxVal = new AnnotatedTreeNode();
+		
+		if (left.getType() == DataType.FLOAT || right.getType() == DataType.FLOAT)
+			ctxVal.setType(DataType.FLOAT);			
+		else
+			ctxVal.setType(DataType.INT);
+		
+		if (ctx.ADD() != null) {
+			if (ctxVal.getType() == DataType.FLOAT) {
+				ctxVal.setValue((float)left.getValue() + (float)right.getValue());
+			} else {
+				ctxVal.setValue((int)left.getValue() + (int)right.getValue());
+			}			
+		}else{
+			if (ctxVal.getType() == DataType.FLOAT) {
+				ctxVal.setValue((float)left.getValue() - (float)right.getValue());
+			} else {
+				ctxVal.setValue((int)left.getValue() - (int)right.getValue());
+			}
+		}
+		this.setValue(ctx, ctxVal);
+	}
+
+	@Override
+	public void enterMultDiv(MultDivContext ctx) {
+		// TODO Auto-generated method stub
+		super.enterMultDiv(ctx);
+	}
+
+	@Override
+	public void exitMultDiv(MultDivContext ctx) {
+		// TODO Auto-generated method stub
+		super.exitMultDiv(ctx);
+	}	
 }

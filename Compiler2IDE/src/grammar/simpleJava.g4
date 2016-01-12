@@ -72,13 +72,13 @@ print: TPRINT OB (expr|expr2|STR|BOOL) (COMMA (expr|expr2|STR|BOOL) )* CB
 read: TREAD OB ID (COMMA ID)* CB
     ;
 
-expr: OB expr CB
-    | expr (MUT|DIV) expr
-    | expr (ADD|SUB) expr
-    | INT
-    | FLOAT
-    | ID
-    | chamadaFuncoes
+expr: OB expr CB # Bracket
+    | expr (MUT|DIV) expr # MultDiv
+    | expr (ADD|SUB) expr # AddSub
+    | INT # Int
+    | FLOAT # Float
+    | ID # Id
+    | chamadaFuncoes # FunctionCall
     ;
 
 expr2:  OB expr2 CB

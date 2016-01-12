@@ -1,6 +1,5 @@
+// Generated from /home/rafael/workspace/Compiladores/Compiler2IDE/src/grammar/simpleJava.g4 by ANTLR 4.1
 package grammar;
-// Generated from /Users/laercioag/Documents/Grammars/simpleJava/simpleJava.g4 by ANTLR 4.1
-
    import java.util.*;
 
 import org.antlr.v4.runtime.atn.*;
@@ -1631,41 +1630,155 @@ public class simpleJavaParser extends Parser {
 
 	public static class ExprContext extends ParserRuleContext {
 		public int _p;
-		public TerminalNode DIV() { return getToken(simpleJavaParser.DIV, 0); }
-		public ChamadaFuncoesContext chamadaFuncoes() {
-			return getRuleContext(ChamadaFuncoesContext.class,0);
-		}
-		public TerminalNode FLOAT() { return getToken(simpleJavaParser.FLOAT, 0); }
-		public TerminalNode INT() { return getToken(simpleJavaParser.INT, 0); }
-		public List<ExprContext> expr() {
-			return getRuleContexts(ExprContext.class);
-		}
-		public TerminalNode ID() { return getToken(simpleJavaParser.ID, 0); }
-		public ExprContext expr(int i) {
-			return getRuleContext(ExprContext.class,i);
-		}
-		public TerminalNode MUT() { return getToken(simpleJavaParser.MUT, 0); }
-		public TerminalNode OB() { return getToken(simpleJavaParser.OB, 0); }
-		public TerminalNode CB() { return getToken(simpleJavaParser.CB, 0); }
-		public TerminalNode SUB() { return getToken(simpleJavaParser.SUB, 0); }
-		public TerminalNode ADD() { return getToken(simpleJavaParser.ADD, 0); }
 		public ExprContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
 		public ExprContext(ParserRuleContext parent, int invokingState, int _p) {
 			super(parent, invokingState);
 			this._p = _p;
 		}
 		@Override public int getRuleIndex() { return RULE_expr; }
+	 
+		public ExprContext() { }
+		public void copyFrom(ExprContext ctx) {
+			super.copyFrom(ctx);
+			this._p = ctx._p;
+		}
+	}
+	public static class FloatContext extends ExprContext {
+		public TerminalNode FLOAT() { return getToken(simpleJavaParser.FLOAT, 0); }
+		public FloatContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof simpleJavaListener ) ((simpleJavaListener)listener).enterExpr(this);
+			if ( listener instanceof simpleJavaListener ) ((simpleJavaListener)listener).enterFloat(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof simpleJavaListener ) ((simpleJavaListener)listener).exitExpr(this);
+			if ( listener instanceof simpleJavaListener ) ((simpleJavaListener)listener).exitFloat(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof simpleJavaVisitor ) return ((simpleJavaVisitor<? extends T>)visitor).visitExpr(this);
+			if ( visitor instanceof simpleJavaVisitor ) return ((simpleJavaVisitor<? extends T>)visitor).visitFloat(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AddSubContext extends ExprContext {
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public TerminalNode SUB() { return getToken(simpleJavaParser.SUB, 0); }
+		public TerminalNode ADD() { return getToken(simpleJavaParser.ADD, 0); }
+		public AddSubContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof simpleJavaListener ) ((simpleJavaListener)listener).enterAddSub(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof simpleJavaListener ) ((simpleJavaListener)listener).exitAddSub(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof simpleJavaVisitor ) return ((simpleJavaVisitor<? extends T>)visitor).visitAddSub(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BracketContext extends ExprContext {
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public TerminalNode OB() { return getToken(simpleJavaParser.OB, 0); }
+		public TerminalNode CB() { return getToken(simpleJavaParser.CB, 0); }
+		public BracketContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof simpleJavaListener ) ((simpleJavaListener)listener).enterBracket(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof simpleJavaListener ) ((simpleJavaListener)listener).exitBracket(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof simpleJavaVisitor ) return ((simpleJavaVisitor<? extends T>)visitor).visitBracket(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class IdContext extends ExprContext {
+		public TerminalNode ID() { return getToken(simpleJavaParser.ID, 0); }
+		public IdContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof simpleJavaListener ) ((simpleJavaListener)listener).enterId(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof simpleJavaListener ) ((simpleJavaListener)listener).exitId(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof simpleJavaVisitor ) return ((simpleJavaVisitor<? extends T>)visitor).visitId(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class IntContext extends ExprContext {
+		public TerminalNode INT() { return getToken(simpleJavaParser.INT, 0); }
+		public IntContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof simpleJavaListener ) ((simpleJavaListener)listener).enterInt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof simpleJavaListener ) ((simpleJavaListener)listener).exitInt(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof simpleJavaVisitor ) return ((simpleJavaVisitor<? extends T>)visitor).visitInt(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class FunctionCallContext extends ExprContext {
+		public ChamadaFuncoesContext chamadaFuncoes() {
+			return getRuleContext(ChamadaFuncoesContext.class,0);
+		}
+		public FunctionCallContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof simpleJavaListener ) ((simpleJavaListener)listener).enterFunctionCall(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof simpleJavaListener ) ((simpleJavaListener)listener).exitFunctionCall(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof simpleJavaVisitor ) return ((simpleJavaVisitor<? extends T>)visitor).visitFunctionCall(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class MultDivContext extends ExprContext {
+		public TerminalNode DIV() { return getToken(simpleJavaParser.DIV, 0); }
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public TerminalNode MUT() { return getToken(simpleJavaParser.MUT, 0); }
+		public MultDivContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof simpleJavaListener ) ((simpleJavaListener)listener).enterMultDiv(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof simpleJavaListener ) ((simpleJavaListener)listener).exitMultDiv(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof simpleJavaVisitor ) return ((simpleJavaVisitor<? extends T>)visitor).visitMultDiv(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1686,6 +1799,10 @@ public class simpleJavaParser extends Parser {
 			switch ( getInterpreter().adaptivePredict(_input,33,_ctx) ) {
 			case 1:
 				{
+				_localctx = new BracketContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+
 				setState(298); match(OB);
 				setState(299); expr(0);
 				setState(300); match(CB);
@@ -1694,24 +1811,36 @@ public class simpleJavaParser extends Parser {
 
 			case 2:
 				{
+				_localctx = new IntContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(302); match(INT);
 				}
 				break;
 
 			case 3:
 				{
+				_localctx = new FloatContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(303); match(FLOAT);
 				}
 				break;
 
 			case 4:
 				{
+				_localctx = new IdContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(304); match(ID);
 				}
 				break;
 
 			case 5:
 				{
+				_localctx = new FunctionCallContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(305); chamadaFuncoes();
 				}
 				break;
@@ -1729,7 +1858,7 @@ public class simpleJavaParser extends Parser {
 					switch ( getInterpreter().adaptivePredict(_input,34,_ctx) ) {
 					case 1:
 						{
-						_localctx = new ExprContext(_parentctx, _parentState, _p);
+						_localctx = new MultDivContext(new ExprContext(_parentctx, _parentState, _p));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(308);
 						if (!(6 >= _localctx._p)) throw new FailedPredicateException(this, "6 >= $_p");
@@ -1745,7 +1874,7 @@ public class simpleJavaParser extends Parser {
 
 					case 2:
 						{
-						_localctx = new ExprContext(_parentctx, _parentState, _p);
+						_localctx = new AddSubContext(new ExprContext(_parentctx, _parentState, _p));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(311);
 						if (!(5 >= _localctx._p)) throw new FailedPredicateException(this, "5 >= $_p");
