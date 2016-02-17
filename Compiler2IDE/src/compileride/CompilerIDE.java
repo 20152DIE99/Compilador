@@ -25,6 +25,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import grammar.DefPhaseSimpleJava;
 import grammar.simpleJavaActions;
 import grammar.simpleJavaErrorListener;
 import grammar.simpleJavaLexer;
@@ -293,9 +294,11 @@ public class CompilerIDE extends JFrame implements ActionListener {
 	        
 	        //Listener
 	        ParseTreeWalker walker = new ParseTreeWalker();
-	        simpleJavaActions extractor = new simpleJavaActions(this, parser);
-	        walker.walk(extractor, tree);
+	        //simpleJavaActions extractor = new simpleJavaActions(this, parser);
+	        //walker.walk(extractor, tree);
 	        
+	        DefPhaseSimpleJava def = new DefPhaseSimpleJava();
+	        walker.walk(def, tree);
 	        if(showTreeI.isSelected()){
 		        printResults("Parse Tree:\n\n");
 		        printResults(tree.toStringTree(parser));

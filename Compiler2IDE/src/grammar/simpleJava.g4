@@ -29,8 +29,11 @@ tipo: TINT
 declVars: TVAR ID (COMMA ID)* COLON tipo SCOLON
         ;
 
-declFuncoes: ID OB ((tipo ID) (COMMA tipo ID)*)? CB COLON tipo OCB (declConst | declVars)* comandos* CCB
-           ;
+declFuncoes: ID OB params CB COLON tipo OCB (declConst | declVars)* comandos* CCB
+           	;
+           
+params: ((tipo ID) (COMMA tipo ID)*)?
+			;
 
 declReturn: TRETURN OB (expr|expr2|chamadaFuncoes|STR|BOOL) CB
           ;

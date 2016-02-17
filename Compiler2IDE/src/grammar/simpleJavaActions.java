@@ -272,7 +272,7 @@ public class simpleJavaActions extends simpleJavaBaseListener {
 		// TODO Auto-generated method stub
 		super.exitInt(ctx);
 		AnnotatedTreeNode annotedNode = 
-				new AnnotatedTreeNode(DataType.INT, Integer.parseInt(ctx.getText()));
+				new AnnotatedTreeNode(Type.INT, Integer.parseInt(ctx.getText()));
 		//TODO
 		this.setValue(ctx, annotedNode);
 	}
@@ -339,32 +339,33 @@ public class simpleJavaActions extends simpleJavaBaseListener {
 
 	@Override
 	public void enterAddSub(AddSubContext ctx) {
-		// TODO Auto-generated method stub
 		super.enterAddSub(ctx);
 	}
 
 	@Override
 	public void exitAddSub(AddSubContext ctx) {
-		// TODO Auto-generated method stub
 		super.exitAddSub(ctx);
-		// TODO observar casos Float e INT e os procedimentos a fazer
+		// TODO observar casos Float e INT e os procedimentos a fazer (coercao?)
+		
 		AnnotatedTreeNode left =  getValue(ctx.expr(0));
 		AnnotatedTreeNode right =  getValue(ctx.expr(1));
 		AnnotatedTreeNode ctxVal = new AnnotatedTreeNode();
 		
-		if (left.getType() == DataType.FLOAT || right.getType() == DataType.FLOAT)
-			ctxVal.setType(DataType.FLOAT);			
+		// TODO E possivel chegarem outros parametros que nao do tipo Int/Float?
+		
+		if (left.getType() == Type.FLOAT || right.getType() == Type.FLOAT)
+			ctxVal.setType(Type.FLOAT);			
 		else
-			ctxVal.setType(DataType.INT);
+			ctxVal.setType(Type.INT);
 		
 		if (ctx.ADD() != null) {
-			if (ctxVal.getType() == DataType.FLOAT) {
+			if (ctxVal.getType() == Type.FLOAT) {
 				ctxVal.setValue((float)left.getValue() + (float)right.getValue());
 			} else {
 				ctxVal.setValue((int)left.getValue() + (int)right.getValue());
 			}			
 		}else{
-			if (ctxVal.getType() == DataType.FLOAT) {
+			if (ctxVal.getType() == Type.FLOAT) {
 				ctxVal.setValue((float)left.getValue() - (float)right.getValue());
 			} else {
 				ctxVal.setValue((int)left.getValue() - (int)right.getValue());
@@ -375,7 +376,6 @@ public class simpleJavaActions extends simpleJavaBaseListener {
 
 	@Override
 	public void enterMultDiv(MultDivContext ctx) {
-		// TODO Auto-generated method stub
 		super.enterMultDiv(ctx);
 	}
 
@@ -383,5 +383,27 @@ public class simpleJavaActions extends simpleJavaBaseListener {
 	public void exitMultDiv(MultDivContext ctx) {
 		// TODO Auto-generated method stub
 		super.exitMultDiv(ctx);
+		AnnotatedTreeNode left =  getValue(ctx.expr(0));
+		AnnotatedTreeNode right =  getValue(ctx.expr(1));
+		AnnotatedTreeNode ctxVal = new AnnotatedTreeNode();
+		if (left.getType() == Type.FLOAT || right.getType() == Type.FLOAT)
+			ctxVal.setType(Type.FLOAT);			
+		else
+			ctxVal.setType(Type.INT);
+		
+		if (ctx.MUT() != null) {
+			if (ctxVal.getType() == Type.FLOAT) {
+				ctxVal.setValue((float)left.getValue() * (float)right.getValue());
+			} else {
+				ctxVal.setValue((int)left.getValue() * (int)right.getValue());
+			}			
+		}else{
+			if (ctxVal.getType() == Type.FLOAT) {
+				ctxVal.setValue((float)left.getValue() / (float)right.getValue());
+			} else {
+				ctxVal.setValue((int)left.getValue() / (int)right.getValue());
+			}
+		}
+		this.setValue(ctx, ctxVal);
 	}	
 }

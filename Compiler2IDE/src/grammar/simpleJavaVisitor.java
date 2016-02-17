@@ -70,6 +70,13 @@ public interface simpleJavaVisitor<T> extends ParseTreeVisitor<T> {
 	T visitBracket(@NotNull simpleJavaParser.BracketContext ctx);
 
 	/**
+	 * Visit a parse tree produced by {@link simpleJavaParser#params}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParams(@NotNull simpleJavaParser.ParamsContext ctx);
+
+	/**
 	 * Visit a parse tree produced by {@link simpleJavaParser#FunctionCall}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

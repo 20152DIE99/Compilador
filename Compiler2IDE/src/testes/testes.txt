@@ -1,0 +1,32 @@
+Teste 01: declaração de variavel única e utilização da mesma em uma expressão simples
+
+class teste;
+var a : int;
+main ( ){
+	1+a;
+}
+
+Teste 02: declaração de lista de variável e utilização em uma expressão simples
+
+class teste;
+var a,b,c,d : int;
+main ( ){
+	a+b+c+d;
+}
+
+Teste 03: Redeclaração de uma variável em duas desclaração distinta
+
+class teste;
+var a : int;
+var a : int;
+main ( ){
+	a * 2;
+}
+
+Teste 04: Redeclaração de uma variável em uma mesma declaração
+
+class teste;
+var a, a : int;
+main ( ){
+	a * 2;
+}

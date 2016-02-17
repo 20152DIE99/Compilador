@@ -2,23 +2,23 @@ package grammar;
 
 public class AnnotatedTreeNode {
 //	Fields
-	private DataType type;
+	private Type type;
 	private Object value;
 	
 	public AnnotatedTreeNode() {
 		super();
 	}
-	public AnnotatedTreeNode(DataType type, Object value){
+	public AnnotatedTreeNode(Type type, Object value){
 		super();
 		this.type = type;
 		this.value = value;
 	}
 	
 //	Getters and Setters
-	public DataType getType() {
+	public Type getType() {
 		return type;
 	}
-	public void setType(DataType type) {
+	public void setType(Type type) {
 		this.type = type;
 	}
 	public Object getValue() {

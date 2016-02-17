@@ -123,6 +123,19 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
+	@Override public void enterParams(@NotNull simpleJavaParser.ParamsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitParams(@NotNull simpleJavaParser.ParamsContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
 	@Override public void enterFunctionCall(@NotNull simpleJavaParser.FunctionCallContext ctx) { }
 	/**
 	 * {@inheritDoc}

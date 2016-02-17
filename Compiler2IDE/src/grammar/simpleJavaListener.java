@@ -99,6 +99,17 @@ public interface simpleJavaListener extends ParseTreeListener {
 	void exitBracket(@NotNull simpleJavaParser.BracketContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link simpleJavaParser#params}.
+	 * @param ctx the parse tree
+	 */
+	void enterParams(@NotNull simpleJavaParser.ParamsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link simpleJavaParser#params}.
+	 * @param ctx the parse tree
+	 */
+	void exitParams(@NotNull simpleJavaParser.ParamsContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link simpleJavaParser#FunctionCall}.
 	 * @param ctx the parse tree
 	 */
