@@ -1,32 +1,58 @@
 Teste 01: declaração de variavel única e utilização da mesma em uma expressão simples
+esperado.: Sem Erros
 
 class teste;
 var a : int;
 main ( ){
-	1+a;
+	a = 1+2;
 }
-
+----------
 Teste 02: declaração de lista de variável e utilização em uma expressão simples
+esperado.: Var não inicializada
 
 class teste;
 var a,b,c,d : int;
 main ( ){
-	a+b+c+d;
+	a = a+b+c+d;
 }
-
+----------
 Teste 03: Redeclaração de uma variável em duas desclaração distinta
+esperado.: Redeclarão de variável
 
 class teste;
 var a : int;
 var a : int;
 main ( ){
-	a * 2;
+	a = a * 2;
 }
-
+----------
 Teste 04: Redeclaração de uma variável em uma mesma declaração
+esperado.: Redeclarão de variável
 
 class teste;
 var a, a : int;
 main ( ){
-	a * 2;
+	a = a * 2;
 }
+----------
+Teste 05: Redeclações e tipo inválido
+esperado.: Redeclarão de variável, Tipo desconhecido
+
+class teste;
+var a : int;
+var a : int;
+var a : INT;
+main ( ){
+	a = a * 2;
+}
+----------
+Teste 06: Variável desconhecida
+esperado: Erro Var desconhecida
+
+class teste;
+var a : int;
+var b : int;
+main ( ){
+	a = a * b * x;
+}
+----------

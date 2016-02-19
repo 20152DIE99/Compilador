@@ -297,7 +297,7 @@ public class CompilerIDE extends JFrame implements ActionListener {
 	        //simpleJavaActions extractor = new simpleJavaActions(this, parser);
 	        //walker.walk(extractor, tree);
 	        
-	        DefPhaseSimpleJava def = new DefPhaseSimpleJava();
+	        DefPhaseSimpleJava def = new DefPhaseSimpleJava(this, parser);
 	        walker.walk(def, tree);
 	        if(showTreeI.isSelected()){
 		        printResults("Parse Tree:\n\n");

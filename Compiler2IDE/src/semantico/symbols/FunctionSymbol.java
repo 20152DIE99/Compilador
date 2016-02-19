@@ -8,6 +8,7 @@ import semantico.scopes.Scope;
 public class FunctionSymbol extends Symbol implements Scope {
 	Map<String, Symbol> arguments = new LinkedHashMap<String, Symbol>();
 	Scope enclosingScope;
+	String mangledName;
 	
 	public FunctionSymbol(String name, grammar.Type type, Scope enclosingScope ) {
 		super(name,type);
@@ -45,8 +46,8 @@ public class FunctionSymbol extends Symbol implements Scope {
 
 	@Override
 	public Symbol resolveCurrentScope(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		Symbol s = arguments.get(name);
+		return s;
 	}
 
 }

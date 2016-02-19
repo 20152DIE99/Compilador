@@ -1,0 +1,102 @@
+Teste 1 : Declaração simples
+esperado: Sem erros
+
+class teste;
+var a : int;
+var b : boolean;
+var c : float;
+var d : string;
+fatorial() : int {
+	var e : int;
+	return (0);
+}
+main ( ){
+	a = a * 2;
+}
+----------
+Teste 2 : Declaração simples com params
+esperado: Sem erros
+
+class teste;
+var a : int;
+var b : boolean;
+var c : float;
+var d : string;
+fatorial(int x, int z) : int {
+	var e : int;
+	return (0);
+}
+main ( ){
+	a = a * 2;
+}
+----------
+Teste 3 : Declaração simples com params usando uma lista
+esperado: Erro exigindo tipo, tipo inválido erro Sintático
+
+class teste;
+var a : int;
+var b : boolean;
+var c : float;
+var d : string;
+fatorial(int x,z) : int {
+	var e : int;
+	return (0);
+}
+main ( ){
+	a = a * 2;
+}
+----------
+Teste 4 : Declaração simples com params usando 2+ params mas um deles sem variável
+esperado: Erro
+
+class teste;
+var a : int;
+var b : boolean;
+var c : float;
+var d : string;
+fatorial(int x,int ) : int {
+	var e : int;
+	return (0);
+}
+main ( ){
+	a = a * 2;
+}
+----------
+Teste 5 : Declaração simples com params usando 2+ params um deles com mesmo nome de uma variável já declarada
+		  e tentativa de redeclação de váriavel com mesmo nome do parametro da func
+esperado: Erro
+
+class teste;
+var a : int;
+fatorial(int x,int a) : int {
+	var a : int;
+	return (0);
+}
+main ( ){
+	a = a * 2;
+}
+----------
+Teste 6 : Declaração simples com params e overloading de params e return type
+esperado: Sem erros
+
+class teste;
+var a : int;
+var b : boolean;
+var c : float;
+var d : string;
+fatorial(int x, int z) : int {
+	var e : int;
+	return (0);
+}
+fatorial(int x, float z) : int {
+	var e : int;
+	return (0);
+}
+fatorial(int x, int z) : float {
+	var e : int;
+	return (0);
+}
+main ( ){
+	a = a * 2;
+}
+----------

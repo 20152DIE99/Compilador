@@ -4,11 +4,14 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import compilerErrors.SemanticError;
+import compileride.CompilerIDE;
 import grammar.simpleJavaParser.DeclFuncoesContext;
 import grammar.simpleJavaParser.DeclVarsContext;
 import grammar.simpleJavaParser.FloatContext;
 import grammar.simpleJavaParser.IdContext;
 import grammar.simpleJavaParser.IntContext;
+import grammar.simpleJavaParser.ParamsContext;
 import grammar.simpleJavaParser.ProgContext;
 import grammar.simpleJavaParser.TipoContext;
 import semantico.scopes.GlobalScope;
@@ -22,6 +25,13 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 	ParseTreeProperty<Type> typeChecker = new ParseTreeProperty<Type>(); 
 	GlobalScope globals;
 	Scope currentScope;
+	CompilerIDE ide;
+	simpleJavaParser parser;
+	
+	public DefPhaseSimpleJava(CompilerIDE ide, simpleJavaParser parser){
+		this.ide = ide;
+		this.parser = parser;
+	}
 
     public static Type getType(int tokenType) {
         switch ( tokenType ) {
@@ -35,16 +45,13 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
     
     public void addTypeToChecker(ParserRuleContext ctx, Type type){
     	this.typeChecker.put(ctx, type);
-    }
+    }	
     
     public Type getTypeFromChecker(ParserRuleContext ctx){
     	Type type = this.typeChecker.get(ctx);
     	return (type == null )? Type.INVALID : type; 
     }
-   
-	/* (non-Javadoc)
-	 * @see grammar.simpleJavaBaseListener#enterProg(grammar.simpleJavaParser.ProgContext)
-	 */
+    
 	@Override
 	public void enterProg(ProgContext ctx) {
 		this.globals = new GlobalScope(null);
@@ -55,12 +62,29 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 	public void exitProg(ProgContext ctx) {
 		System.out.println(globals);
 	}
+	
+	//TODO
+	public String mangleName(ParamsContext paramCtx, DeclFuncoesContext funCtx){
+		String funName = funCtx.ID().getText()+"_";
+		int tokenType = funCtx.tipo().start.getType();
+		funName = funName + getType(tokenType);	
+		Type tipoParam;
+		for ( TipoContext tipo : paramCtx.tipo()) {
+			tipoParam = getType(tipo.start.getType());
+			if(tipoParam != Type.INVALID) 
+				funName = funName + "$" + tipoParam;			
+		}
+		return funName;
+	}
 
 	@Override
 	public void enterDeclFuncoes(DeclFuncoesContext ctx) {
 		String name = ctx.ID().getText();
 		int typeTokenType = ctx.tipo().start.getType();
 		Type tipo = getType(typeTokenType);
+		
+		//TODO testar o tipo de token, typeErr
+		//TODO mangle no name
 		FunctionSymbol function = new FunctionSymbol(name, tipo, currentScope);
 		currentScope.define(function);
 		this.saveScope(ctx, function);
@@ -69,8 +93,50 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 
 	@Override
 	public void exitDeclFuncoes(DeclFuncoesContext ctx) {
+		String funName = mangleName(ctx.params(), ctx);
+		String oldFunName = ctx.ID().getText();
+//		currentScope.resolve(ctx.ID().getText()).setName(funName);
+		globals.updateSymbolTable(funName, oldFunName);
 		System.out.println(currentScope);
 		currentScope = currentScope.getEnclosingScope();
+	}
+	
+	@Override
+	public void enterParams(ParamsContext ctx) {
+		// TODO Auto-generated method stub
+		super.enterParams(ctx);
+	}
+
+	@Override
+	public void exitParams(ParamsContext ctx) {
+		super.exitParams(ctx);
+		Type type;
+		for (int i = 0; i < ctx.tipo().size(); i++) {
+			type = getTypeFromChecker(ctx.tipo(i));			
+			if (type == Type.INVALID) {
+//				ide.printError(SemanticError.invalidType(ctx.tipo(i).start.getText(),
+//						ctx.start.getLine()));			
+			}else{
+				//Teste se o simbolo ainda não foi declarado
+				String varName = ctx.ID(i).getText();
+				if(varName.equals("<missing ID>")){
+					System.err.println("Erro sintatico: nome do parâmetro não definido"
+							+ " linha - " + ctx.tipo(i).stop.getLine() + ":"
+							+ ctx.tipo(i).stop.getCharPositionInLine()+ "\n");
+				}else{
+					if (currentScope.resolveCurrentScope(varName) != null){
+						ide.printError(SemanticError.varRedeclaration(
+								varName, ctx.stop.getLine()));
+						//Fim Teste se o simbolo ainda não foi declarado
+					}else{
+						VariableSymbol var = new VariableSymbol(varName, type);				
+						currentScope.define(var);
+					}					
+				}
+				//remoçao do contexto do tipo das anotações da árvore
+				this.typeChecker.removeFrom(ctx.tipo(i));
+			}
+		}
 	}
 	
 	void saveScope(ParserRuleContext ctx, Scope s) { 
@@ -107,9 +173,7 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 		String varName = ctx.ID().getText();
 		Symbol var = currentScope.resolve(varName);
 		if (var == null) {
-			//TODO em003 - erro de variavel nao declarada
-			System.err.println("Variavel nao encontrada na linha " + 
-					ctx.start.getLine() + " : \' " + varName + " \'"); 
+			ide.printError(SemanticError.varUnknown(varName, ctx.start.getLine()));
 			//TODO erro SymbolFunction			
 		}else{
 			this.addTypeToChecker(ctx, var.getType());		
@@ -125,18 +189,16 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 	public void exitDeclVars(DeclVarsContext ctx) {
 		Type tipo = getTypeFromChecker(ctx.tipo());
 		if (tipo == Type.INVALID) {
-			//TODO #em001 Erro de tipo invalido
-			System.err.println("Tipo invalido linha: " + ctx.start.getLine()); 
+			ide.printError(SemanticError.invalidType(ctx.tipo().start.getText(),
+				ctx.start.getLine()));
 		}else{
 			for (TerminalNode id : ctx.ID()) {
 				//Teste se o simbolo ainda não foi declarado
 				String varName = id.getText();
+				if(varName.equals("<missing ID>")) continue;
 				if (currentScope.resolveCurrentScope(varName) != null){
-					//TODO #em002 Erro de redeclaracao de var
-					System.err.println( 
-							String.format(
-									"Redeclaracao da variavel '%s' na linha '%d'",
-									varName, ctx.start.getLine()));
+					ide.printError(SemanticError.varRedeclaration(
+							varName, ctx.start.getLine()));
 				//Fim Teste se o simbolo ainda não foi declarado
 				}else{
 					VariableSymbol var = new VariableSymbol(varName, tipo);				
@@ -144,7 +206,7 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 				}
 			}
 		}
-		//TODO refatorar essa acao em um metodo
+		//remoçao do contexto do tipo das anotações da árvore
 		this.typeChecker.removeFrom(ctx.tipo());
 	}
 

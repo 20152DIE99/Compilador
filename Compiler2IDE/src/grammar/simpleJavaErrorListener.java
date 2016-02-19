@@ -42,16 +42,46 @@ public class simpleJavaErrorListener extends BaseErrorListener{
 		// TODO Auto-generated method stub
 		super.reportContextSensitivity(recognizer, dfa, startIndex, stopIndex, prediction, configs);
 	}
-
+	
 	@Override
-	public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine,
-			String msg, RecognitionException e) {
-		
-		super.syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e);
-		List<String> stack = ((Parser)recognizer).getRuleInvocationStack();
+	public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol
+			, int line, int charPositionInLine,	String msg, RecognitionException e) {
+		List<String> stack = ((org.antlr.v4.runtime.Parser)recognizer).
+				getRuleInvocationStack();
 		Collections.reverse(stack);
-		ide.printError("rule stack: "+stack);
-		ide.printError("line "+line+":"+charPositionInLine+" at "+
-		offendingSymbol+": "+msg);
+//		ide.printError("SyntaxErr\npilha de regras: " + stack);
+//		"SemanticErr.Linha-%d: Redeclaração da variável \"%s\"", line,varID;
+		ide.printError("SintaticErr.Linha-" + line + ": " + translateMsg(msg)+ ".");
+//		ide.printError("linha " + line + ":" + charPositionInLine + " na " + ": " + translateMsg(msg));		
 	}
+	
+	private String translateMsg(String msg){
+		if (msg.contains("missing ")) {
+			msg = msg.replace("missing ", "faltando ");
+			msg = msg.replace(" at ", " antes de ");
+			msg = msg.replace("ID", "identificador");
+			msg = msg.replace("{'int', 'float', 'string', 'boolean'}", 
+					"expressão de tipo ('int', 'float', 'boolean' ou 'string')");
+		}
+		if (msg.contains("extraneous input ")){
+			msg = msg.replace("extraneous input ", "input estranho ");
+			msg = msg.replace(" expecting ", " esperando ");
+		}
+		if (msg.contains("rule ")){
+			msg = msg.replace("rule ", "regra ");
+		}
+		if (msg.contains("mismatched input ")){
+			msg = msg.replace("mismatched input " , "entrada incompatível ");
+			msg = msg.replace(" expecting ", " esperando ");
+		}
+		if (msg.contains("no viable alternative at input ")){
+			msg = msg.replace("no viable alternative at input ",
+					"Erro de sintaxe para a entrada ");
+		}
+		if (msg.contains("unknown recognition error type: ")){
+			msg = msg.replace("unknown recognition error type: ",
+					"tipo de error de reconhecimento desconhecido");
+		}		
+		return msg;
+	}	
 }
