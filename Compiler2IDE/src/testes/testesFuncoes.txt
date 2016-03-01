@@ -100,3 +100,23 @@ main ( ){
 	a = a * 2;
 }
 ----------
+Teste 7 : Declaração simples com params e overloading de params e return type função com mesmos params e retorno
+esperado: Erro de redeclaração de função
+
+class teste;
+var a : int;
+var b : boolean;
+var c : float;
+var d : string;
+fatorial(int x, float z) : int {
+	var e : int;
+	return (0);
+}
+fatorial(int x, float z) : int {
+	var e : int;
+	return (0);
+}
+main ( ){
+	a = a * 2;
+}
+----------

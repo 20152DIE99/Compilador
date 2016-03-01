@@ -6,16 +6,19 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import compilerErrors.SemanticError;
 import compileride.CompilerIDE;
+import grammar.simpleJavaParser.DeclConstContext;
 import grammar.simpleJavaParser.DeclFuncoesContext;
 import grammar.simpleJavaParser.DeclVarsContext;
 import grammar.simpleJavaParser.FloatContext;
 import grammar.simpleJavaParser.IdContext;
+import grammar.simpleJavaParser.InicValContext;
 import grammar.simpleJavaParser.IntContext;
 import grammar.simpleJavaParser.ParamsContext;
 import grammar.simpleJavaParser.ProgContext;
 import grammar.simpleJavaParser.TipoContext;
 import semantico.scopes.GlobalScope;
 import semantico.scopes.Scope;
+import semantico.symbols.ConstantSymbol;
 import semantico.symbols.FunctionSymbol;
 import semantico.symbols.Symbol;
 import semantico.symbols.VariableSymbol;
@@ -103,7 +106,6 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 	
 	@Override
 	public void enterParams(ParamsContext ctx) {
-		// TODO Auto-generated method stub
 		super.enterParams(ctx);
 	}
 
@@ -196,9 +198,15 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 				//Teste se o simbolo ainda não foi declarado
 				String varName = id.getText();
 				if(varName.equals("<missing ID>")) continue;
-				if (currentScope.resolveCurrentScope(varName) != null){
-					ide.printError(SemanticError.varRedeclaration(
+				Symbol symb = currentScope.resolveCurrentScope(varName);
+				if (symb != null){
+					if(symb instanceof ConstantSymbol)
+						ide.printError(SemanticError.constRedeClaretion(
+								varName, ctx.start.getLine()));
+					else if(symb instanceof VariableSymbol)
+						ide.printError(SemanticError.varRedeclaration(
 							varName, ctx.start.getLine()));
+					
 				//Fim Teste se o simbolo ainda não foi declarado
 				}else{
 					VariableSymbol var = new VariableSymbol(varName, tipo);				
@@ -208,6 +216,84 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 		}
 		//remoçao do contexto do tipo das anotações da árvore
 		this.typeChecker.removeFrom(ctx.tipo());
+	}
+
+	@Override
+	public void enterDeclConst(DeclConstContext ctx) {
+		// TODO Auto-generated method stub
+		super.enterDeclConst(ctx);
+	}
+
+	@Override
+	public void exitDeclConst(DeclConstContext ctx) {
+		Type tipo = getTypeFromChecker(ctx.tipo());
+		Type tipoInc = getTypeFromChecker(ctx.inicVal());
+		String idName = ctx.ID().getText();
+		//Error de tipo invalido na declaração da constantes
+		if(tipo == Type.INVALID){
+			ide.printError(SemanticError.invalidType(ctx.tipo().start.getText(),
+				ctx.tipo().start.getLine()));
+			return;
+		}
+		//Error de tipos incompatíveis entre o tipo da constantes e da expressão de inicialização
+		if(tipo != tipoInc){
+			ide.printError(SemanticError.typeMismatch(ctx.tipo().start.getLine()));
+		}else{			
+			Symbol constante = this.currentScope.resolve(idName);
+			if(constante == null){
+				constante = new ConstantSymbol(idName, tipo,
+					evalConsantValue(ctx.inicVal()));
+				this.currentScope.define(constante);
+			}else{
+				if(constante instanceof VariableSymbol)
+					ide.printError(SemanticError.varRedeclaration(idName, ctx.start.getLine()));
+				else 
+					if(constante instanceof ConstantSymbol)
+						ide.printError(SemanticError.constRedeClaretion(idName, ctx.start.getLine()));
+			}			
+		}
+	}
+	
+	private Object evalConsantValue(InicValContext ctx){
+		Object value = null;
+		Type tipoInc = getTypeFromChecker(ctx);
+		
+		switch (tipoInc) {
+		case INT:
+			return Integer.parseInt(ctx.INT().getText());
+		case FLOAT:
+			return Float.parseFloat(ctx.FLOAT().getText());
+		case BOOLEAN:
+			return ctx.BOOL().getText().equals("FALSE") ? false : true;
+		case STRING:
+			return ctx.STR().getText();
+		default:
+			break;
+		}		
+		return value;
+	}
+	
+
+	@Override
+	public void enterInicVal(InicValContext ctx) {
+		super.enterInicVal(ctx);
+	}
+
+	@Override
+	public void exitInicVal(InicValContext ctx) {
+		if(ctx.INT() != null){
+			this.addTypeToChecker(ctx, Type.INT);
+		}
+		if(ctx.FLOAT() != null){
+			this.addTypeToChecker(ctx, Type.FLOAT);
+		}
+		if(ctx.BOOL() != null){
+			this.addTypeToChecker(ctx, Type.BOOLEAN);
+		}
+		if(ctx.STR() != null){
+			this.addTypeToChecker(ctx, Type.STRING);
+		}
+		super.exitInicVal(ctx);
 	}
 
 	@Override

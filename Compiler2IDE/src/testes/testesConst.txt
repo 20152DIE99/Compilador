@@ -1,0 +1,105 @@
+Teste 01: declaração de var
+esperado.: Sem Erros
+
+class teste;
+int CONS = 10;
+float C2 = 10.5;
+string ST = "lol";
+main ( ){
+}
+
+---------------
+Teste 02: declaração constantes com error de typo
+esperado.: Type mismatch error
+
+class teste;
+int CONS = 10;
+float C2 = "error";
+string ST = "lol";
+main ( ){
+}
+
+---------------
+Teste 03: Todas os erros de tipo incompatível possiveis
+esperado.: Type mismatch error
+
+class teste;
+int C1 = 10;
+int C2 = 10.4;
+int C3 = "10";
+int C4 = TRUE;
+float F1 = 10;
+float F2 = 10.4;
+float F3 = "10";
+float F4 = FALSE;
+string F1 = 10;
+string F2 = 10.4;
+string F3 = "10";
+string F4 = TRUE;
+boolean F1 = 10;
+boolean F2 = 10.4;
+boolean F3 = "10";
+boolean F4 = FALSE;
+main ( ){
+}
+
+---------------
+Teste 04: tipo da constante invalido
+esperado.: Erros sintaticos
+
+class teste;
+inT CONS = 10;
+float C2 = 10.5;
+string ST = "lol";
+main ( ){
+}
+
+---------------
+Teste 05: tipo da constante invalido dentro de função
+esperado.: Erros sintaticos
+
+class teste;
+int CONS = 10;
+float C2 = 10.5;
+string ST = "lol";
+fatorial(int x, float z) : int {
+	inT CONS2 = 10;
+	var e : int;
+	return (0);
+}
+main ( ){
+}
+
+---------------
+Teste 06: declarações de constantes dentro e fora da escopos de funções
+esperado.: Sem erros
+
+class teste;
+int CONS = 10;
+float C2 = 10.5;
+string ST = "lol";
+fatorial(int x, float z) : int {
+	int CONS2 = 10;
+	var e : int;
+	return (0);
+}
+main ( ){
+}
+
+
+---------------
+Teste 07: redeclaração de constantes como var e constante
+esperado.: Erros sintaticos
+
+class teste;
+int CONS = 10;
+float C2 = 10.5;
+string ST = "lol";
+var CONS : int;
+fatorial(int x, float z) : int {
+	int CONS2 = 10;
+	var e : int;
+	return (0);
+}
+main ( ){
+}
