@@ -1,5 +1,6 @@
 // Generated from /home/rafael/Desktop/Compiladores/TestesSimpleJava/simpleJava.g4 by ANTLR 4.1
-package grammar;
+
+   package grammar;
    import java.util.*;
 
 
@@ -14,58 +15,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * of the available methods.
  */
 public class simpleJavaBaseListener implements simpleJavaListener {
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterFloat(@NotNull simpleJavaParser.FloatContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitFloat(@NotNull simpleJavaParser.FloatContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterDeclReturn(@NotNull simpleJavaParser.DeclReturnContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitDeclReturn(@NotNull simpleJavaParser.DeclReturnContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterComandos(@NotNull simpleJavaParser.ComandosContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitComandos(@NotNull simpleJavaParser.ComandosContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterDeclFuncoes(@NotNull simpleJavaParser.DeclFuncoesContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitDeclFuncoes(@NotNull simpleJavaParser.DeclFuncoesContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 * <p/>
@@ -97,19 +46,6 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterAddSub(@NotNull simpleJavaParser.AddSubContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitAddSub(@NotNull simpleJavaParser.AddSubContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
 	@Override public void enterBracket(@NotNull simpleJavaParser.BracketContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -117,6 +53,175 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitBracket(@NotNull simpleJavaParser.BracketContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterProg(@NotNull simpleJavaParser.ProgContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitProg(@NotNull simpleJavaParser.ProgContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterCmdfor(@NotNull simpleJavaParser.CmdforContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitCmdfor(@NotNull simpleJavaParser.CmdforContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterAtribuicao(@NotNull simpleJavaParser.AtribuicaoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitAtribuicao(@NotNull simpleJavaParser.AtribuicaoContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterPrincipal(@NotNull simpleJavaParser.PrincipalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitPrincipal(@NotNull simpleJavaParser.PrincipalContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterRead(@NotNull simpleJavaParser.ReadContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitRead(@NotNull simpleJavaParser.ReadContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterInt(@NotNull simpleJavaParser.IntContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitInt(@NotNull simpleJavaParser.IntContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterChamadaFuncoes(@NotNull simpleJavaParser.ChamadaFuncoesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitChamadaFuncoes(@NotNull simpleJavaParser.ChamadaFuncoesContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterFloat(@NotNull simpleJavaParser.FloatContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitFloat(@NotNull simpleJavaParser.FloatContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterComandos(@NotNull simpleJavaParser.ComandosContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitComandos(@NotNull simpleJavaParser.ComandosContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterDeclReturn(@NotNull simpleJavaParser.DeclReturnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitDeclReturn(@NotNull simpleJavaParser.DeclReturnContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterDeclFuncoes(@NotNull simpleJavaParser.DeclFuncoesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitDeclFuncoes(@NotNull simpleJavaParser.DeclFuncoesContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterInicVal(@NotNull simpleJavaParser.InicValContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitInicVal(@NotNull simpleJavaParser.InicValContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterAddSub(@NotNull simpleJavaParser.AddSubContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitAddSub(@NotNull simpleJavaParser.AddSubContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -136,19 +241,6 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterFunctionCall(@NotNull simpleJavaParser.FunctionCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitFunctionCall(@NotNull simpleJavaParser.FunctionCallContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
 	@Override public void enterDeclConst(@NotNull simpleJavaParser.DeclConstContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -156,6 +248,19 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitDeclConst(@NotNull simpleJavaParser.DeclConstContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterFunctionCall(@NotNull simpleJavaParser.FunctionCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitFunctionCall(@NotNull simpleJavaParser.FunctionCallContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -188,58 +293,6 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterProg(@NotNull simpleJavaParser.ProgContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitProg(@NotNull simpleJavaParser.ProgContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterAtribuicao(@NotNull simpleJavaParser.AtribuicaoContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitAtribuicao(@NotNull simpleJavaParser.AtribuicaoContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterCmdfor(@NotNull simpleJavaParser.CmdforContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitCmdfor(@NotNull simpleJavaParser.CmdforContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterPrincipal(@NotNull simpleJavaParser.PrincipalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitPrincipal(@NotNull simpleJavaParser.PrincipalContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
 	@Override public void enterTipo(@NotNull simpleJavaParser.TipoContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -253,19 +306,6 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterRead(@NotNull simpleJavaParser.ReadContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitRead(@NotNull simpleJavaParser.ReadContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
 	@Override public void enterId(@NotNull simpleJavaParser.IdContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -273,19 +313,6 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitId(@NotNull simpleJavaParser.IdContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterInt(@NotNull simpleJavaParser.IntContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitInt(@NotNull simpleJavaParser.IntContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -312,19 +339,6 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitDeclVars(@NotNull simpleJavaParser.DeclVarsContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterChamadaFuncoes(@NotNull simpleJavaParser.ChamadaFuncoesContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitChamadaFuncoes(@NotNull simpleJavaParser.ChamadaFuncoesContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

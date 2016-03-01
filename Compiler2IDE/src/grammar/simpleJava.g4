@@ -7,6 +7,7 @@
 grammar simpleJava;
 
 @header{
+   //package grammar;
    import java.util.*;
 }
 
@@ -17,8 +18,11 @@ grammar simpleJava;
 prog: TCLASS ID SCOLON (declConst | declVars)* declFuncoes* principal
     ;
 
-declConst: tipo ID EQUALS (expr|expr2|STR|BOOL) SCOLON
+declConst: tipo ID EQUALS inicVal SCOLON
          ;
+
+inicVal: INT | FLOAT | STR | BOOL         
+       ;
 
 tipo: TINT
     | TFLOAT
@@ -52,8 +56,6 @@ comandos: atribuicao SCOLON
         | cmdifelse
         | cmdfor
         | cmdwhile
-        | expr SCOLON
-        | expr2 SCOLON
         ;
 
 

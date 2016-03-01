@@ -1,5 +1,6 @@
 // Generated from /home/rafael/Desktop/Compiladores/TestesSimpleJava/simpleJava.g4 by ANTLR 4.1
-package grammar;
+
+   package grammar;
    import java.util.*;
 
 import org.antlr.v4.runtime.Lexer;
