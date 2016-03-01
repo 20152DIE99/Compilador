@@ -3,18 +3,17 @@ package compileride;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
+
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+//import javax.swing.event.DocumentEvent;
+//import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -25,8 +24,11 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import  org.fife.ui.rtextarea.*;
+import org.fife.ui.rsyntaxtextarea.*;
+
+
 import grammar.DefPhaseSimpleJava;
-import grammar.simpleJavaActions;
 import grammar.simpleJavaErrorListener;
 import grammar.simpleJavaLexer;
 import grammar.simpleJavaParser;
@@ -34,7 +36,7 @@ import grammar.simpleJavaParser;
 public class CompilerIDE extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 4650489160139037035L;
-	private JTextPane editor;
+	
 	private JTextPane console;
 	StyledDocument consoleDoc;
 	Style consoleStyle;
@@ -46,6 +48,8 @@ public class CompilerIDE extends JFrame implements ActionListener {
     private String pad;
     private JToolBar toolBar;
     private JFileChooser fc;
+    private RSyntaxTextArea textArea;
+    
     //private JTabbedPane tabbedPane;
     
     public static void main(String[] args) {
@@ -59,16 +63,22 @@ public class CompilerIDE extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Container pane = getContentPane();
         pane.setLayout(new BorderLayout());
+        
+        textArea = new RSyntaxTextArea(20, 60);
+        textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+        
 
+        RTextScrollPane sp = new RTextScrollPane(textArea);
+        
+        
         pad = " ";
-        editor = new JTextPane();
         console = new JTextPane();
         menuBar = new JMenuBar();
         fileM = new JMenu("File");
         editM = new JMenu("Edit");
         runAsM = new JMenu("Run As");
         viewM = new JMenu("View");
-        scpane = new JScrollPane(editor);
+        scpane = new JScrollPane(sp);
         scpane2 = new JScrollPane(console);
         exitI = new JMenuItem("Exit");
         cutI = new JMenuItem("Cut");
@@ -82,35 +92,36 @@ public class CompilerIDE extends JFrame implements ActionListener {
         toolBar = new JToolBar();
         fc = new JFileChooser();
         
-        editor.getDocument().putProperty("caller", editor);
+     //   textArea.getDocument().putProperty("caller", editor);
         
-        DocumentListener myDocumentListener = new DocumentListener(){
+//        DocumentListener myDocumentListener = new DocumentListener(){
 
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				colorText(e);
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				colorText(e);
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				colorText(e);
-			}
-
-			public void colorText(DocumentEvent e){
-				JTextPane textPane = (JTextPane) e.getDocument().getProperty("caller");
-				if(textPane != null){
-					String text = textPane.getText();
-				}
-			}
+//			@Override
+//			public void insertUpdate(DocumentEvent e) {
+//				colorText(e);
+//			}
+//
+//			@Override
+//			public void removeUpdate(DocumentEvent e) {
+//				colorText(e);
+//			}
+//
+//			@Override
+//			public void changedUpdate(DocumentEvent e) {
+//				colorText(e);
+//			}
+//
+//			public void colorText(DocumentEvent e){
+//				JTextPane textPane = (JTextPane) e.getDocument().getProperty("caller");
+//				if(textPane != null){
+//					String text = textPane.getText();
+//				}
+//			}
+//        	
+//        };
+//        
         	
-        };
-        
-        editor.getDocument().addDocumentListener(myDocumentListener);
+//        	editor.getDocument().addDocumentListener(myDocumentListener);
         
         console.setEditable(false);
         console.setText("Results:\n\n");
@@ -143,13 +154,7 @@ public class CompilerIDE extends JFrame implements ActionListener {
         viewM.add(showTreeI);
         
 
-//        saveI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-//        loadI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
-//        cutI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
-//        copyI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
-//        pasteI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
-//        selectI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-        
+    
         saveI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         loadI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         cutI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
@@ -187,18 +192,18 @@ public class CompilerIDE extends JFrame implements ActionListener {
         } else if (choice == exitI) {
             System.exit(0);
         } else if (choice == cutI) {
-            pad = editor.getSelectedText();
-            editor.replaceSelection("");
+            pad = textArea.getSelectedText();
+           textArea.replaceSelection("");
         } else if (choice == copyI) {
-            pad = editor.getSelectedText();
+            pad = textArea.getSelectedText();
         } else if (choice == pasteI) {  
             try {
-				editor.getDocument().insertString(editor.getCaretPosition(), pad, null);
+				textArea.getDocument().insertString(textArea.getCaretPosition(), pad, null);
 			} catch (BadLocationException e1) {
 				printError(e1.toString());
 			}
         } else if (choice == selectI) {
-            editor.selectAll();
+            textArea.selectAll();
         } else if (choice == grammar1I) {
         	console.setText("Results:\n\n");
         	runAsSimpleJava();
@@ -206,7 +211,7 @@ public class CompilerIDE extends JFrame implements ActionListener {
     }
     
     public void setText(String content) {
-    	editor.setText(content);
+    	textArea.setText(content);
     }
     
     public void loadTextFromFile() {
@@ -255,7 +260,7 @@ public class CompilerIDE extends JFrame implements ActionListener {
     }
     
     public String getText() {
-    	return editor.getText();
+    	return textArea.getText();
     }
     
     public void printResults(String content) {
