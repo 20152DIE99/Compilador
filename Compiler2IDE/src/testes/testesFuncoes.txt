@@ -120,3 +120,22 @@ main ( ){
 	a = a * 2;
 }
 ----------
+Teste 8 : declaração de um function overloading com mesma assinatura
+Esperado: CompileErr declaração de função com assinatura idêntica
+
+class teste;
+int CONS = 10;
+float C2 = 10.5;
+string ST = "lol";
+fatorial(int a, float b) : int {
+	int C_1 = 10;
+	var e_1 : int;
+	return (0);
+}
+fatorial(int z, float d) : int {
+	int F_1 = 10;
+	var G_1 : int;
+	return (0);
+}
+main ( ){
+}

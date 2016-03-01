@@ -11,4 +11,8 @@ public class GlobalScope extends BaseScope {
     	this.symbols.remove(funName);
     	this.symbols.put(newFunName, fun);
     }
+    
+    public void remove(String symbName){
+    	this.symbols.remove(symbName);
+    }
 }

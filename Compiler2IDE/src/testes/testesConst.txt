@@ -89,7 +89,7 @@ main ( ){
 
 ---------------
 Teste 07: redeclaração de constantes como var e constante
-esperado.: Erros sintaticos
+esperado.: Erros semanticos de redeclaração de constantes
 
 class teste;
 int CONS = 10;
@@ -97,8 +97,30 @@ float C2 = 10.5;
 string ST = "lol";
 var CONS : int;
 fatorial(int x, float z) : int {
-	int CONS2 = 10;
+	int CONS = 10;
 	var e : int;
+	return (0);
+}
+main ( ){
+}
+
+---------------
+Teste 08: redeclaração de constantes como var e constante
+esperado.: Erros semanticos de redeclaração de constantes
+
+class teste;
+int CONS = 10;
+float C2 = 10.5;
+string ST = "lol";
+var CONS : int;
+fatorial(int a, float b) : int {
+	int C_1 = 10;
+	var e_1 : int;
+	return (0);
+}
+fatorial(int z, float d) : int {
+	int F_1 = 10;
+	var G_1 : int;
 	return (0);
 }
 main ( ){

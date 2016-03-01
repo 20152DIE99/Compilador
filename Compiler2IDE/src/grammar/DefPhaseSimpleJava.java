@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import compilerErrors.CompileError;
 import compilerErrors.SemanticError;
 import compileride.CompilerIDE;
 import grammar.simpleJavaParser.DeclConstContext;
@@ -99,9 +100,21 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 		String funName = mangleName(ctx.params(), ctx);
 		String oldFunName = ctx.ID().getText();
 //		currentScope.resolve(ctx.ID().getText()).setName(funName);
-		globals.updateSymbolTable(funName, oldFunName);
-		System.out.println(currentScope);
-		currentScope = currentScope.getEnclosingScope();
+		Symbol sym = globals.resolve(oldFunName);
+		Symbol symb = globals.resolve(funName);
+		//existe uma função com nome do ID -> Update na tabela de symb
+		if(sym != null){
+			if(symb == null){
+				globals.updateSymbolTable(funName, oldFunName);
+				System.out.println(currentScope);
+				currentScope = currentScope.getEnclosingScope();
+			}else{
+				ide.printError(CompileError.overLoadingErr(oldFunName, ctx.start.getLine()));
+				this.scopes.removeFrom(ctx);
+				currentScope = globals;
+				globals.remove(oldFunName);
+			}				
+		}		
 	}
 	
 	@Override
