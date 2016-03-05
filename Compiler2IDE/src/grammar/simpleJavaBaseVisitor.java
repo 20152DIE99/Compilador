@@ -1,4 +1,4 @@
-// Generated from /home/rafael/Desktop/Compiladores/TestesSimpleJava/simpleJava.g4 by ANTLR 4.1
+// Generated from /home/rafael/workspace/Compiladores/Compiler2IDE/src/grammar/simpleJava.g4 by ANTLR 4.1
 
    package grammar;
    import java.util.*;
@@ -133,7 +133,7 @@ public class simpleJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.
 	 */
-	@Override public T visitInicVal(@NotNull simpleJavaParser.InicValContext ctx) { return visitChildren(ctx); }
+	@Override public T visitInicAttrib(@NotNull simpleJavaParser.InicAttribContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -142,6 +142,14 @@ public class simpleJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * {@link #visitChildren} on {@code ctx}.
 	 */
 	@Override public T visitAddSub(@NotNull simpleJavaParser.AddSubContext ctx) { return visitChildren(ctx); }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 */
+	@Override public T visitInicVal(@NotNull simpleJavaParser.InicValContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}

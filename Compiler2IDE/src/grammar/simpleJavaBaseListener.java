@@ -1,4 +1,4 @@
-// Generated from /home/rafael/Desktop/Compiladores/TestesSimpleJava/simpleJava.g4 by ANTLR 4.1
+// Generated from /home/rafael/workspace/Compiladores/Compiler2IDE/src/grammar/simpleJava.g4 by ANTLR 4.1
 
    package grammar;
    import java.util.*;
@@ -202,13 +202,13 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterInicVal(@NotNull simpleJavaParser.InicValContext ctx) { }
+	@Override public void enterInicAttrib(@NotNull simpleJavaParser.InicAttribContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitInicVal(@NotNull simpleJavaParser.InicValContext ctx) { }
+	@Override public void exitInicAttrib(@NotNull simpleJavaParser.InicAttribContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -222,6 +222,19 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitAddSub(@NotNull simpleJavaParser.AddSubContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterInicVal(@NotNull simpleJavaParser.InicValContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitInicVal(@NotNull simpleJavaParser.InicValContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

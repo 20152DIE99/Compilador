@@ -1,4 +1,4 @@
-// Generated from /home/rafael/Desktop/Compiladores/TestesSimpleJava/simpleJava.g4 by ANTLR 4.1
+// Generated from /home/rafael/workspace/Compiladores/Compiler2IDE/src/grammar/simpleJava.g4 by ANTLR 4.1
 
    package grammar;
    import java.util.*;
@@ -166,15 +166,15 @@ public interface simpleJavaListener extends ParseTreeListener {
 	void exitDeclFuncoes(@NotNull simpleJavaParser.DeclFuncoesContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link simpleJavaParser#inicVal}.
+	 * Enter a parse tree produced by {@link simpleJavaParser#inicAttrib}.
 	 * @param ctx the parse tree
 	 */
-	void enterInicVal(@NotNull simpleJavaParser.InicValContext ctx);
+	void enterInicAttrib(@NotNull simpleJavaParser.InicAttribContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link simpleJavaParser#inicVal}.
+	 * Exit a parse tree produced by {@link simpleJavaParser#inicAttrib}.
 	 * @param ctx the parse tree
 	 */
-	void exitInicVal(@NotNull simpleJavaParser.InicValContext ctx);
+	void exitInicAttrib(@NotNull simpleJavaParser.InicAttribContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link simpleJavaParser#AddSub}.
@@ -186,6 +186,17 @@ public interface simpleJavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAddSub(@NotNull simpleJavaParser.AddSubContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link simpleJavaParser#inicVal}.
+	 * @param ctx the parse tree
+	 */
+	void enterInicVal(@NotNull simpleJavaParser.InicValContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link simpleJavaParser#inicVal}.
+	 * @param ctx the parse tree
+	 */
+	void exitInicVal(@NotNull simpleJavaParser.InicValContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link simpleJavaParser#params}.

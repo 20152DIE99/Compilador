@@ -1,4 +1,4 @@
-// Generated from /home/rafael/Desktop/Compiladores/TestesSimpleJava/simpleJava.g4 by ANTLR 4.1
+// Generated from /home/rafael/workspace/Compiladores/Compiler2IDE/src/grammar/simpleJava.g4 by ANTLR 4.1
 
    package grammar;
    import java.util.*;
@@ -113,11 +113,11 @@ public interface simpleJavaVisitor<T> extends ParseTreeVisitor<T> {
 	T visitDeclFuncoes(@NotNull simpleJavaParser.DeclFuncoesContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link simpleJavaParser#inicVal}.
+	 * Visit a parse tree produced by {@link simpleJavaParser#inicAttrib}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitInicVal(@NotNull simpleJavaParser.InicValContext ctx);
+	T visitInicAttrib(@NotNull simpleJavaParser.InicAttribContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link simpleJavaParser#AddSub}.
@@ -125,6 +125,13 @@ public interface simpleJavaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAddSub(@NotNull simpleJavaParser.AddSubContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link simpleJavaParser#inicVal}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInicVal(@NotNull simpleJavaParser.InicValContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link simpleJavaParser#params}.

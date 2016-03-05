@@ -7,7 +7,7 @@
 grammar simpleJava;
 
 @header{
-   //package grammar;
+   package grammar;
    import java.util.*;
 }
 
@@ -42,7 +42,7 @@ params: ((tipo ID) (COMMA tipo ID)*)?
 declReturn: TRETURN OB (expr|expr2|chamadaFuncoes|STR|BOOL) CB
           ;
 
-chamadaFuncoes: ID OB ((expr|expr2|STR|BOOL) (COMMA (expr|expr2|STR|BOOL))*)? CB
+chamadaFuncoes: ID OB (((STR|BOOL)|expr|expr2) (COMMA ((STR|BOOL)|expr|expr2))*)? CB
               ;
 
 principal: TMAIN OB CB OCB comandos* CCB
@@ -62,13 +62,16 @@ comandos: atribuicao SCOLON
 cmdifelse: TIF OB expr2 CB OCB comandos* CCB (TELSE OCB comandos* CCB)?
       ;
           
-cmdfor: TFOR OB ID EQUALS (expr|expr2) COLON (expr|expr2) (TSTEP (expr|expr2))? CB OCB (comandos|TEXIT)* CCB
+cmdfor: TFOR OB ID EQUALS INT COLON INT (TSTEP INT)? CB OCB (comandos|TEXIT)* CCB
    ;
 
 cmdwhile: TWHILE OB expr2 CB OCB (comandos|TEXIT)* CCB
      ;
 
-atribuicao: ID EQUALS (expr|expr2|STR|BOOL|chamadaFuncoes)
+atribuicao: ID EQUALS inicAttrib
+          ;
+
+inicAttrib: (STR | BOOL ) | expr | expr2 | chamadaFuncoes
           ;
 
 print: TPRINT OB (expr|expr2|STR|BOOL) (COMMA (expr|expr2|STR|BOOL) )* CB
@@ -80,8 +83,8 @@ read: TREAD OB ID (COMMA ID)* CB
 expr: OB expr CB # Bracket
     | expr (MUT|DIV) expr # MultDiv
     | expr (ADD|SUB) expr # AddSub
-    | INT # Int
-    | FLOAT # Float
+    | SUB?INT # Int
+    | SUB?FLOAT # Float
     | ID # Id
     | chamadaFuncoes # FunctionCall
     ;
@@ -127,6 +130,6 @@ DIV: '/';
 STR: ('"'|'“') .*? ('"'|'”');
 BOOL: 'TRUE'|'FALSE';
 ID: [a-zA-Z][a-zA-Z0-9_]*;
-INT: SUB?[0-9]+;
-FLOAT: SUB?[0-9]+'.'[0-9]+;
+INT: [0-9]+;
+FLOAT: [0-9]+'.'[0-9]+;
 WS: [ \t\r\n]+ -> skip;
