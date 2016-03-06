@@ -3,7 +3,7 @@ package semantico.symbols;
 import grammar.*;
 import semantico.scopes.Scope;
 
-public class Symbol {
+public abstract class Symbol {
 	public static Type Type;
 	
 	private String name;

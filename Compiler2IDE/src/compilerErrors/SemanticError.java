@@ -1,6 +1,9 @@
 package compilerErrors;
 
 public class SemanticError {
+	public static void main(String[] args) {
+		
+	}
 	public static String varRedeclaration(String varID, int line){
 		return String.format(
 			"SemanticErr.Linha-%d: Redeclaração da variável \"%s\".", line, varID);
@@ -25,5 +28,9 @@ public class SemanticError {
 	public static String constRedeClaretion(String idName, int line) {
 		return String.format(
 				"SemanticErr.Linha-%d: Redeclaração da constante \"%s\".", line, idName);
+	}
+	public static String constantAssigment(String idName, int line) {
+		return String.format(
+				"SemanticErr.Linha-%d: Reatribuição da constante \"%s\".", line, idName);
 	}
 }
