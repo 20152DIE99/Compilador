@@ -21,6 +21,14 @@ public class simpleJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.
 	 */
+	@Override public T visitParamCall(@NotNull simpleJavaParser.ParamCallContext ctx) { return visitChildren(ctx); }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 */
 	@Override public T visitCmdifelse(@NotNull simpleJavaParser.CmdifelseContext ctx) { return visitChildren(ctx); }
 
 	/**

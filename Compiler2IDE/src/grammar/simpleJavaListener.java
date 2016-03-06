@@ -12,6 +12,17 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface simpleJavaListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by {@link simpleJavaParser#paramCall}.
+	 * @param ctx the parse tree
+	 */
+	void enterParamCall(@NotNull simpleJavaParser.ParamCallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link simpleJavaParser#paramCall}.
+	 * @param ctx the parse tree
+	 */
+	void exitParamCall(@NotNull simpleJavaParser.ParamCallContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link simpleJavaParser#cmdifelse}.
 	 * @param ctx the parse tree
 	 */

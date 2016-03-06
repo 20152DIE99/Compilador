@@ -42,8 +42,11 @@ params: ((tipo ID) (COMMA tipo ID)*)?
 declReturn: TRETURN OB (expr|expr2|chamadaFuncoes|STR|BOOL) CB
           ;
 
-chamadaFuncoes: ID OB (((STR|BOOL)|expr|expr2) (COMMA ((STR|BOOL)|expr|expr2))*)? CB
+chamadaFuncoes: ID OB (paramCall (COMMA paramCall)*)? CB
               ;
+
+paramCall: (STR|BOOL)|expr|expr2
+        ;
 
 principal: TMAIN OB CB OCB comandos* CCB
          ;
@@ -74,7 +77,7 @@ atribuicao: ID EQUALS inicAttrib
 inicAttrib: (STR | BOOL ) | expr | expr2 | chamadaFuncoes
           ;
 
-print: TPRINT OB (expr|expr2|STR|BOOL) (COMMA (expr|expr2|STR|BOOL) )* CB
+print: TPRINT OB paramCall (COMMA paramCall )* CB
      ;
 
 read: TREAD OB ID (COMMA ID)* CB

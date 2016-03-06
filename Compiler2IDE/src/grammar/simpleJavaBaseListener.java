@@ -20,6 +20,19 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
+	@Override public void enterParamCall(@NotNull simpleJavaParser.ParamCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitParamCall(@NotNull simpleJavaParser.ParamCallContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
 	@Override public void enterCmdifelse(@NotNull simpleJavaParser.CmdifelseContext ctx) { }
 	/**
 	 * {@inheritDoc}

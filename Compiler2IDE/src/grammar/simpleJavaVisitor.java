@@ -15,6 +15,13 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface simpleJavaVisitor<T> extends ParseTreeVisitor<T> {
 	/**
+	 * Visit a parse tree produced by {@link simpleJavaParser#paramCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParamCall(@NotNull simpleJavaParser.ParamCallContext ctx);
+
+	/**
 	 * Visit a parse tree produced by {@link simpleJavaParser#cmdifelse}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
