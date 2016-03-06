@@ -7,15 +7,20 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import compilerErrors.CompileError;
 import compilerErrors.SemanticError;
 import compileride.CompilerIDE;
+import grammar.simpleJavaParser.CmdforContext;
+import grammar.simpleJavaParser.CmdwhileContext;
 import grammar.simpleJavaParser.DeclConstContext;
 import grammar.simpleJavaParser.DeclFuncoesContext;
 import grammar.simpleJavaParser.DeclVarsContext;
+import grammar.simpleJavaParser.Expr2Context;
 import grammar.simpleJavaParser.FloatContext;
 import grammar.simpleJavaParser.IdContext;
 import grammar.simpleJavaParser.InicValContext;
 import grammar.simpleJavaParser.IntContext;
 import grammar.simpleJavaParser.ParamsContext;
+import grammar.simpleJavaParser.PrintContext;
 import grammar.simpleJavaParser.ProgContext;
+import grammar.simpleJavaParser.ReadContext;
 import grammar.simpleJavaParser.TipoContext;
 import semantico.scopes.GlobalScope;
 import semantico.scopes.Scope;
@@ -65,6 +70,7 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 	@Override
 	public void exitProg(ProgContext ctx) {
 		System.out.println(globals);
+		
 	}
 	
 	//TODO
@@ -320,15 +326,90 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 		Type tipo = getType(typeTokenType);
 		this.addTypeToChecker(ctx, tipo);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	@Override
+	public void exitRead(ReadContext ctx) {
+		ctx.ID();
+		for (TerminalNode id : ctx.ID()) {
+			//verifica se o ID(variavel) ja foi declarada
+			Symbol symb = currentScope.resolve(id.getText());
+			if(symb!= null){
+				//existe algo a ser lido
+				if(symb instanceof FunctionSymbol){
+					//verifica se o parametro � uma funcao
+					ide.printError(SemanticError.errorREADIO(symb.getName(),
+							ctx.start.getLine()));
+					return;
+				}
+				if(symb instanceof VariableSymbol){
+					//checa se o parametro e variavel
+//					Type tipo = symb.getType();
+					//TODO fazer gera��o de codigo para leitura.
+					System.out.println("Executar read aqui");
+				}
+				//TODO caso seja constante.
+				if(symb instanceof ConstantSymbol){
+					//� uma constante,emite mensagem de erro
+					ide.printError(SemanticError.errorREADIOConstante(
+							symb.getName(), ctx.start.getLine()));
+				}
+			}else{
+				if(id.getText().equals("<missing ID>")) {
+					System.out.println("vazio");
+					//TODO quando o parametro de read � null,criar mensagem de erro
+				}else
+				ide.printError(SemanticError.varUnknown(id.getText(),ctx.start.getLine()));
+			}
+		}
+	}
+
+	@Override
+	public void exitCmdfor(CmdforContext ctx) {
+		// TODO Auto-generated method stub
+		String varControle = ctx.ID().getText();
+		int valorInicial = Integer.parseInt(ctx.INT(0).getText());
+		int valorFinal = Integer.parseInt(ctx.INT(1).getText());
+		
+		int incremento = 1;
+		
+		Symbol symb = currentScope.resolve(varControle);
+		//verifica se foi declarada
+			if(currentScope.resolve(ctx.ID().getText())== null){
+				//variavel nao declarada
+				ide.printError(SemanticError.varUnknown(varControle, ctx.start.getLine()));
+				return;		
+			}
+		
+			//testar se possui  incremento 
+			if (ctx.INT(2) != null){
+				//neste caso  possui incremento ,usar o incremento do campo step
+				incremento  =  Integer.parseInt(ctx.INT(2).getText());
+			
+			}
+			if(symb instanceof ConstantSymbol){
+				ide.printError(SemanticError.constRedeClaretion(varControle,ctx.start.getLine()));
+				
+			}
+			if( valorInicial < valorFinal && incremento < 0  ){
+				//incremento negativo para valores crescente.
+				ide.printError(SemanticError.logicError(varControle, ctx.start.getLine()));
+			}
+			if( valorInicial > valorFinal && incremento > 0  ){
+				//incremento positivo para valores decrescente
+				ide.printError(SemanticError.logicError(varControle, ctx.start.getLine()));
+			}
+	  }
+
+	@Override
+	public void exitCmdwhile(CmdwhileContext ctx) {
+		Expr2Context expressao2;
+		expressao2= ctx.expr2();
+		//verificar se é uma expressao2 é  logica e valida
+
+  
+		
+	}
+	   
 }
+	
+
