@@ -62,7 +62,7 @@ comandos: atribuicao SCOLON
 cmdifelse: TIF OB expr2 CB OCB comandos* CCB (TELSE OCB comandos* CCB)?
       ;
           
-cmdfor: TFOR OB ID EQUALS INT COLON INT (TSTEP INT)? CB OCB (comandos|TEXIT)* CCB
+cmdfor: TFOR OB ID EQUALS INT COLON INT (TSTEP SUB?INT)? CB OCB (comandos|TEXIT)* CCB
    ;
 
 cmdwhile: TWHILE OB expr2 CB OCB (comandos|TEXIT)* CCB
