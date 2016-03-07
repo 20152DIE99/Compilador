@@ -29,7 +29,6 @@ import grammar.simpleJavaParser.InicValContext;
 import grammar.simpleJavaParser.IntContext;
 import grammar.simpleJavaParser.MultDivContext;
 import grammar.simpleJavaParser.ParamsContext;
-import grammar.simpleJavaParser.PrintContext;
 import grammar.simpleJavaParser.ProgContext;
 import grammar.simpleJavaParser.ReadContext;
 import grammar.simpleJavaParser.TipoContext;
@@ -41,6 +40,7 @@ import semantico.symbols.FunctionSymbol;
 import semantico.symbols.Symbol;
 import semantico.symbols.ValuedSymbol;
 import semantico.symbols.VariableSymbol;
+import sun.org.mozilla.javascript.optimizer.Codegen;
 
 public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 	private final boolean debug = true; 
@@ -94,7 +94,7 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 	@Override
 	public void exitProg(ProgContext ctx) {
 		System.out.println(globals);
-		
+		CodeGen.gerador();		
 	}
 	
 	//TODO

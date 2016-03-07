@@ -1,0 +1,1070 @@
+options {
+  JAVA_UNICODE_ESCAPE = true;
+  UNICODE_INPUT = false;
+  DEBUG_PARSER = false;
+}
+
+PARSER_BEGIN(JasminParser)
+
+package wt.parser.jasmin;
+
+import java.io.*;
+import java.util.*;
+import de.fub.bytecode.*;
+import de.fub.bytecode.generic.*;
+
+public class JasminParser {
+  
+  static final String NON_INSTRUCTION = "NON_INSTRUCTION";
+	
+  static ClassGen cg = null;
+  static ConstantPoolGen cp = null;
+  static InstructionFactory factory = null;
+  static String classSource = null;
+  static String className = null;
+  static int classAccess;
+  static String classSuper = null;
+  static ArrayList interfaces = new ArrayList();
+  static String labelName = null;
+  
+  public static void main(String args[]) 
+  	throws IOException, UnsupportedEncodingException, ParseException
+  {
+    JasminParser parser;
+    if (args.length == 0) {
+      System.out.println("Jasmin Parser Version 1.0 by Wang Tao.");
+      System.out.println("Usage:");
+      System.out.println("java wt.parser.jasmin.JasminParser a_jasmin_file.j");
+      System.exit(0);
+    } else if (args.length == 1) {
+        //parser = new JasminParser(new InputStreamReader(new java.io.FileInputStream(args[0]), "UTF-8"));
+        parser = new JasminParser(new java.io.FileInputStream(args[0]));
+        parser.jas_file();
+        String jasFileName = args[0];
+        String classFileName = jasFileName.substring(0,jasFileName.lastIndexOf(".")) + ".class";
+        cg.getJavaClass().dump(classFileName);
+    }
+  }
+  
+  private static InstructionHandle getInstructionHandleByLabel(MethodGen mg, Hashtable labels, String label)
+    throws ParseException
+  {
+    if(labels.get(label) == null) 
+        throw new ParseException("Not defined label '" + label + "' in method '" + mg.getName() + mg.getSignature() + "'.");
+    if(labels.get(label) == NON_INSTRUCTION) 
+        throw new ParseException("No instruction for label '" + label +"' in method '" + mg.getName() + mg.getSignature() + "'.");
+    return (InstructionHandle)labels.get(label);
+  }
+  
+}
+PARSER_END(JasminParser)
+
+/* WHITE SPACE */
+
+<DEFAULT, MIDLINE> SKIP :
+{
+  " "
+| 
+  "\t"
+|
+  "\r"
+}
+
+<DEFAULT> SKIP :
+{ 
+  "\n" 
+} // If in DEFAULT, skip newlines and stay in the default state
+
+
+<MIDLINE> TOKEN :
+{ 
+  <SEP : "\n" > : DEFAULT 
+}// In MIDLINE, newline is a token.
+
+/* COMMENTS */
+
+<DEFAULT, MIDLINE> MORE :
+{
+  ";" : IN_SINGLE_LINE_COMMENT
+}
+
+<IN_SINGLE_LINE_COMMENT>
+SKIP :
+{
+  <SINGLE_LINE_COMMENT: "\n" | "\r" | "\r\n" > : DEFAULT
+}
+
+<IN_SINGLE_LINE_COMMENT>
+MORE :
+{
+  < ~[] >
+}
+
+/* RESERVED WORDS AND LITERALS */
+
+/* Directives (words beginning with a '.') */
+TOKEN :
+{
+    < DCATCH: ".catch" > : MIDLINE
+  |
+    < DCLASS: ".class" > : MIDLINE
+  |
+    < DEND: ".end" > : MIDLINE
+  |
+    < DFIELD: ".field" > : MIDLINE
+  |
+    < DLIMIT: ".limit" > : MIDLINE
+  |
+    < DLINE: ".line" > : MIDLINE
+  |  
+    < DMETHOD: ".method" > : MIDLINE
+  |
+    < DSET: ".set" > : MIDLINE
+  |
+    < DSUPER: ".super" > : MIDLINE
+  |
+    < DSOURCE: ".source" > : MIDLINE
+  | 
+    < DTHROWS: ".throws" > : MIDLINE
+  |
+    < DVAR: ".var" > : MIDLINE
+  |
+    < DIMPLEMENTS: ".implements" > : MIDLINE
+  | 
+    < DINTERFACE: ".interface" > : MIDLINE
+}
+
+/* keywords for directives */
+<MIDLINE> TOKEN :
+{
+    < TO: "to" > : MIDLINE
+  |
+    < USING: "using" > : MIDLINE
+  |
+    < IS: "is" > : MIDLINE
+  |
+    < FROM: "from" > : MIDLINE
+  | 
+    < METHOD: "method"> : MIDLINE
+}
+
+/* access types */
+<MIDLINE> TOKEN :
+{
+    < ABSTRACT: "abstract" > : MIDLINE
+  |
+    < FINAL: "final" > : MIDLINE
+  |
+    < INTERFACE: "interface" > : MIDLINE
+  |
+    < NATIVE: "native" > : MIDLINE
+  |
+    < PRIVATE: "private" > : MIDLINE
+  |
+    < PROTECTED: "protected" > : MIDLINE
+  |
+    < PUBLIC: "public" > : MIDLINE
+  |
+    < STATIC: "static" > : MIDLINE
+  |  
+    < SYNCHRONIZED: "synchronized" > : MIDLINE
+  |
+    < TRANSIENT: "transient" > : MIDLINE
+  |
+    < VOLATILE: "volatile" > : MIDLINE
+} 
+
+/* complex instructions */
+<DEFAULT, MIDLINE> TOKEN :
+{
+    < LOOKUPSWITCH: "lookupswitch" >  : MIDLINE
+  |
+    < TABLESWITCH: "tableswitch" > : MIDLINE
+  |
+    < DEFAULT_BRANCH: "default" > : MIDLINE
+} 
+
+
+/* special symbols */
+<MIDLINE> TOKEN :
+{
+    < EQ: "=" > : MIDLINE
+  |
+    < COLON: ":" > : MIDLINE
+}
+
+/* LITERALS */
+
+<DEFAULT, MIDLINE> TOKEN :
+{
+    < Int: <SIGN> (
+          <DECIMAL_LITERAL> (["l","L"])?
+        | <HEX_LITERAL> (["l","L"])?
+        | <OCTAL_LITERAL> (["l","L"])?
+        )
+    > : MIDLINE
+  |
+    < #SIGN: (["+","-"])? >
+  |
+    < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+  |
+    < #HEX_LITERAL: "0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+ >
+  |
+    < #OCTAL_LITERAL: "0" (["0"-"7"])* >
+  |
+    < Num: <SIGN> (
+          (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["f","F","d","D"])?
+        | "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
+        | (["0"-"9"])+ <EXPONENT> (["f","F","d","D"])?
+        | (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]
+        )
+    > : MIDLINE
+  |
+    < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
+  |
+    < Str:
+        "\""
+        (   (~["\"","\\","\n","\r"])
+          | ("\\"
+              ( ["n","t","b","r","f","\\","'","\""]
+              | ["0"-"7"] ( ["0"-"7"] )?
+              | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+              )
+            )
+        )*
+        "\""
+    > : MIDLINE
+}
+
+<DEFAULT, MIDLINE> TOKEN :
+{
+  < Word: <LETTER>(<LETTER>|<DIGIT>|<SPECIAL_CHAR>)* > : MIDLINE
+|
+  < #LETTER:
+      [
+       "\u0024",
+       "\u0041"-"\u005a",
+       "\u005f",
+       "\u0061"-"\u007a",
+       "\u00c0"-"\u00d6",
+       "\u00d8"-"\u00f6",
+       "\u00f8"-"\u00ff",
+       "\u0100"-"\u1fff",
+       "\u3040"-"\u318f",
+       "\u3300"-"\u337f",
+       "\u3400"-"\u3d2d",
+       "\u4e00"-"\u9fff",
+       "\uf900"-"\ufaff",
+       "[",
+       "<"
+      ]
+  >
+|
+  < #DIGIT:
+      [
+       "\u0030"-"\u0039",
+       "\u0660"-"\u0669",
+       "\u06f0"-"\u06f9",
+       "\u0966"-"\u096f",
+       "\u09e6"-"\u09ef",
+       "\u0a66"-"\u0a6f",
+       "\u0ae6"-"\u0aef",
+       "\u0b66"-"\u0b6f",
+       "\u0be7"-"\u0bef",
+       "\u0c66"-"\u0c6f",
+       "\u0ce6"-"\u0cef",
+       "\u0d66"-"\u0d6f",
+       "\u0e50"-"\u0e59",
+       "\u0ed0"-"\u0ed9",
+       "\u1040"-"\u1049"
+      ]
+  >
+|
+  < #SPECIAL_CHAR:
+  	[
+  	 ".",
+     ";",
+     "/",
+     "(",
+     ")",
+     ">"
+  	]
+  >
+}
+
+/* The grammar */
+
+void jas_file():
+{}
+{
+	source_spec()
+	class_spec()
+  	super_spec()
+	implements_list()
+  	fields()
+	methods()
+}
+
+/* // ---- Source specification */
+
+void source_spec() :
+{
+	Token w;
+}
+{
+	( <DSOURCE> w=<Word> <SEP>
+      { 
+  	  	classSource = w.image; 
+ 	  }
+ 	)?
+}
+
+/* Class specification */
+
+void class_spec() :
+{
+	int acc;
+}
+{
+	<DCLASS> classAccess=access() className=classname() <SEP>
+|
+    <DINTERFACE> acc=access() className=classname() <SEP>
+    {
+        classAccess = acc | 
+                      Constants.ACC_SUPER |
+                      Constants.ACC_INTERFACE;
+    }
+}
+
+String classname() :
+{
+	Token w;
+}
+{
+  w=<Word>
+  { 
+  	return ScannerUtils.convertDots(w.image); 
+  }
+}
+
+int access() :
+{
+	int access_val = 0;
+}
+{
+    access_val=access_list()
+    {
+    	return access_val;
+    }
+}
+
+int access_list() :
+{
+	int access_val = 0;
+	int acc;
+}
+{
+	( acc=access_item()
+		{
+			access_val |= acc;
+		}
+	)*
+	{
+		return access_val;
+	}
+}
+
+int access_item() :
+{}
+{
+    <PUBLIC>       { return Constants.ACC_PUBLIC; }
+  |
+    <PRIVATE>      { return Constants.ACC_PRIVATE; }
+  |
+    <PROTECTED>    { return Constants.ACC_PROTECTED; }
+  |
+    <STATIC>       { return Constants.ACC_STATIC; }
+  |
+    <FINAL>        { return Constants.ACC_FINAL; }
+  |
+    <SYNCHRONIZED> { return Constants.ACC_SYNCHRONIZED; }
+  |
+    <VOLATILE>     { return Constants.ACC_VOLATILE; }
+  |
+    <TRANSIENT>    { return Constants.ACC_TRANSIENT; }
+  |
+    <NATIVE>       { return Constants.ACC_NATIVE; }
+  |
+    <INTERFACE>    { return Constants.ACC_INTERFACE; }
+  |
+    <ABSTRACT>     { return Constants.ACC_ABSTRACT; }
+}
+
+/* Superclass specification */
+
+void super_spec() :
+{
+}
+{
+	<DSUPER> classSuper=classname() <SEP>
+}
+
+/* Implements specification */
+
+void implements_list() :
+{}
+{
+	( implements_spec() | <SEP> )*
+	{
+	    String[] infs = new String[interfaces.size()];
+	    for(int i=0; i<interfaces.size(); i++){
+	        infs[i] = (String)interfaces.get(i);
+	    }
+	    cg = new ClassGen(className, classSuper, classSource, classAccess, infs);
+	    cp = cg.getConstantPool(); // cg creates constant pool
+		factory = new InstructionFactory(cg);
+	}
+}
+
+void implements_spec() :
+{
+	String name;
+}
+{
+	<DIMPLEMENTS> name=classname() <SEP>
+	{
+		interfaces.add(name);
+	}
+}
+
+/* Fields */
+
+void fields() :
+{}
+{
+	( field_spec() )*
+}
+
+void field_spec() :
+{
+	int acc;
+	Token name;
+	Token sig;
+	Object defaultValue;
+}
+{
+  <DFIELD>
+  acc=access() name=<Word> sig=<Word> defaultValue=optional_default() <SEP>
+  {
+    FieldGen fg = new FieldGen(acc, Type.getType(sig.image), name.image, cp);
+    if(defaultValue != null){
+        if(defaultValue instanceof Integer){
+            if("Z".equals(sig.image)){//boolean type
+                if(((Integer)defaultValue).intValue() == 0) 
+                	fg.setInitValue(false);
+                else fg.setInitValue(true);
+            }
+            else if("J".equals(sig.image)){//long type
+            	fg.setInitValue(((Integer)defaultValue).longValue());
+            } 
+            else {
+            	fg.setInitValue(((Integer)defaultValue).intValue());
+            }
+        }
+        if(defaultValue instanceof Long){
+            if("Z".equals(sig.image)){//boolean type
+                if(((Long)defaultValue).longValue() == 0L) 
+                    fg.setInitValue(false);
+                else fg.setInitValue(true);
+            }
+            else fg.setInitValue(((Long)defaultValue).longValue());
+        } 
+        if(defaultValue instanceof Float) fg.setInitValue(((Float)defaultValue).floatValue());
+        if(defaultValue instanceof Double) fg.setInitValue(((Double)defaultValue).doubleValue());
+        if(defaultValue instanceof String) fg.setInitValue((String)defaultValue);
+    }
+    cg.addField(fg.getField());
+  }
+}
+
+/* default value for a field */
+Object optional_default() :
+{
+	Object defaultValue = null;
+}
+{
+ 	( <EQ> defaultValue=item() )?
+ 	{
+ 		return defaultValue;
+ 	}
+}
+
+/* an item is an integer, a float/double/long, or a quoted string */
+Object item() :
+{
+	Token i, n, s;
+}
+{
+    i=<Int>
+    {
+        return ScannerUtils.convertIntObject(i.image); 
+    }
+  |
+    n=<Num>
+    {
+        return ScannerUtils.convertNumObject(n.image);
+    }
+  |
+    s=<Str>
+    {
+        //remove two double quotations
+    	return s.image.substring(1,s.image.length()-1);
+    }
+}
+
+/* Methods */
+
+void methods() :
+{}
+{
+	( method_spec() )*
+}
+
+void method_spec() :
+{
+	MethodGen mg;
+}
+{
+    mg=defmethod()
+    statements(mg)
+    endmethod()
+    {
+        cg.addMethod(mg.getMethod());
+    }
+}
+
+MethodGen defmethod() :
+{
+	int acc;
+	Token name;
+}
+{
+  <DMETHOD> acc=access() name=<Word> <SEP>
+	{
+        String split[] = ScannerUtils.splitMethodSignature(name.image);
+        InstructionList il = new InstructionList();
+        Type returnType = Type.getReturnType(split[1]);
+        Type[] argTypes = Type.getArgumentTypes(split[1]);
+        MethodGen mg = new MethodGen(
+                acc,
+                returnType,
+                argTypes,
+                new String[argTypes.length], //arg names, for later use
+                split[0], //method name
+                ScannerUtils.convertChars(className, "/", '.'), //class name
+                il,
+                cp);
+        return mg;
+  }
+}
+
+void endmethod() :
+{}
+{
+	<DEND> <METHOD> <SEP>
+}
+
+/* Statements in a method */
+
+void statements(MethodGen mg) :
+{
+    //pair of <label name>:<instruction handle>
+	Hashtable labels = new Hashtable(); 
+	//pair of <LocalVariableGen object>:<ScopeOfLocalVar object>
+	Hashtable localVars = new Hashtable();
+	//TempBranchInstruction instances
+	ArrayList branchInstructions = new ArrayList();
+}
+{
+	( statement(mg, labels, localVars, branchInstructions) )*
+	{
+		//adjust local variables scope
+		//argument names
+		Iterator itr = localVars.keySet().iterator();
+		int argCount = mg.getArgumentNames().length;
+		while(itr.hasNext()){
+		    LocalVariableGen localVarGen = (LocalVariableGen)itr.next();
+		    ScopeOfLocalVar varScope = (ScopeOfLocalVar)localVars.get(localVarGen);
+		    localVarGen.setStart(getInstructionHandleByLabel(mg, labels, varScope.startLabel));
+		    localVarGen.setEnd(getInstructionHandleByLabel(mg, labels, varScope.endLabel));
+		    int c = 0;
+		    if(argCount > 0){
+		        String argName = "arg"+c;
+		        mg.setArgumentName(c, argName);
+		        c++;
+		        argCount--;
+		    }
+		}
+		
+		//adjust branch instructions
+		for(int i=0; i<branchInstructions.size(); i++){
+		    Object insn = branchInstructions.get(i);
+		    if(insn instanceof TempBranchInstruction){
+		        TempBranchInstruction bInsn = (TempBranchInstruction)insn;
+		        bInsn.instruction.setTarget(getInstructionHandleByLabel(mg, labels, bInsn.target));
+		    } else if(insn instanceof TempSwitch){
+		        TempSwitch sInsn  = (TempSwitch)insn;
+                InstructionHandle[] targets = new InstructionHandle[sInsn.targets.size()];
+                for(int j=0; j< targets.length; j++){
+                    targets[j] = getInstructionHandleByLabel(mg, labels, (String)sInsn.targets.get(j));
+                }
+                InstructionHandle defaultTarget = getInstructionHandleByLabel(mg, labels, sInsn.defaultTarget);
+                int[] matches = new int[sInsn.match.size()];
+                for(int j=0; j<matches.length; j++){
+                    matches[j] = ((Integer)sInsn.match.get(j)).intValue();
+                }
+		        if(sInsn.type == TempSwitch.TABLESWITCH){
+		            sInsn.ih.setInstruction(new TABLESWITCH(matches, targets, defaultTarget));
+		        } else if(sInsn.type == TempSwitch.LOOKUPSWITCH){
+		            sInsn.ih.setInstruction(new TABLESWITCH(matches, targets, defaultTarget));
+		        }
+		    }
+		}
+	}
+}
+
+void statement(MethodGen mg, Hashtable labels, Hashtable localVars, ArrayList branchInstructions) :
+{
+	Token firstTokenOfStmt = JasminParser.getToken(1);
+	int stmtLine = firstTokenOfStmt.beginLine;
+	InstructionHandle ih = null;
+}
+{
+     ih = stmnt(mg, labels, localVars, branchInstructions) <SEP>
+     {
+        if(ih != null) mg.addLineNumber(ih, stmtLine);
+     }
+}
+
+InstructionHandle stmnt(MethodGen mg, Hashtable labels, Hashtable localVars, ArrayList branchInstructions) :
+{
+	InstructionHandle ih = null;
+}
+{
+  (
+  		LOOKAHEAD(2)
+	    label(labels) {return null;}
+	  |
+	    directive(mg, labels, localVars) {return null;}
+	  |
+	    ih = instruction(mg, branchInstructions)
+	    {
+	        if(labelName != null){
+	            labels.put(labelName, ih);
+	            labelName = null;
+	        }
+	        return ih;
+	    }
+ 	)?
+}
+
+/* label: */
+
+void label(Hashtable labels) :
+{
+	Token label;
+}
+{
+  label=<Word> <COLON>
+  {
+    labels.put(label.image, NON_INSTRUCTION);
+    labelName = label.image;
+  }
+}
+
+/* Directives (.catch, .set, .limit, etc.) */
+
+void directive(MethodGen mg, Hashtable labels, Hashtable localVars) :
+{}
+{
+    <DVAR> var_expr(mg, localVars)
+  |
+    <DLIMIT> limit_expr(mg)
+  |
+    <DLINE> line_expr()
+  |
+    <DTHROWS> throws_expr(mg)
+  |
+    <DCATCH> catch_expr(mg, labels)
+  |
+    <DSET> set_expr()
+}
+
+
+/* .var <num> is <name> <sig> from StartLab to EndLab */
+
+void var_expr(MethodGen mg, Hashtable localVars) :
+{
+	Token reg = null, name = null, sig = null, slab = null, elab = null;
+}
+{
+  reg=<Int> <IS> name=<Word> sig=<Word> [ <FROM> slab=<Word> <TO> elab=<Word> ]
+  {
+    LocalVariableGen lg = mg.addLocalVariable(name.image,
+					      Type.getType(sig.image), ScannerUtils.convertInt(reg.image),
+					      null, null);
+	if(slab !=null){
+		ScopeOfLocalVar varScope = new ScopeOfLocalVar();
+		varScope.startLabel = slab.image;
+		varScope.endLabel = elab.image;
+		localVars.put(lg, varScope);
+	}	
+  }
+}
+
+/*
+ .limit stack <val>
+ .limit locals <val>
+*/
+void limit_expr(MethodGen mg) :
+{
+	Token w, v;
+}
+{
+  w=<Word> v=<Int>
+  {
+    // .limit locals
+    if (w.image.equals("locals") || w.image.equals("vars")) // "vars" for historic reasons
+        mg.setMaxLocals(ScannerUtils.convertInt(v.image));
+    // .limit stack
+    else if (w.image.equals("stack"))
+        mg.setMaxStack(ScannerUtils.convertInt(v.image));
+    else
+        throw new ParseException(".limit expected \"stack\" or \"locals\", but got " + w.image);
+  }
+}
+
+/* .line <num> */
+void line_expr() :
+{
+	Token v;
+}
+{
+  v=<Int>
+	{
+		// It's no usefullness, just simply ignore it. 
+	}
+}
+
+/* .throws <class> */
+void throws_expr(MethodGen mg) :
+{
+	String s;
+}
+{
+	s=classname()
+	{
+		mg.addException(ScannerUtils.convertChars(s, "/", '.'));
+	}
+}
+
+/* .catch <class> from <label1> to <label2> using <branchlab> */
+/* Assumption: .catch statements are at the end of instruction list */ 
+void catch_expr(MethodGen mg, Hashtable labels) :
+{
+	String aclass;
+	Token fromlab, tolab, branchlab;
+}
+{
+  aclass=classname() <FROM> fromlab=<Word> <TO> tolab=<Word> <USING> branchlab=<Word>
+  {
+    mg.addExceptionHandler(
+            getInstructionHandleByLabel(mg, labels, fromlab.image),
+            getInstructionHandleByLabel(mg, labels, tolab.image),
+            getInstructionHandleByLabel(mg, labels, branchlab.image),
+            new ObjectType(ScannerUtils.convertChars(aclass, "/", '.')));
+  }
+}
+
+/* .set <var> = <val> */
+void set_expr() :
+{
+	Token name, v, s;
+}
+{
+		LOOKAHEAD(2)
+    name=<Word> v=<Int>     
+    { 
+        ScannerUtils.dict.put(name.image, ScannerUtils.convertIntObject(v.image)); 
+    }
+  |
+  	LOOKAHEAD(2)
+    name=<Word> v=<Word>    
+    { ScannerUtils.dict.put(name.image, v.image); }
+  |
+  	LOOKAHEAD(2)
+    name=<Word> v=<Num>  
+    { 
+        ScannerUtils.dict.put(name.image, ScannerUtils.convertNumObject(v.image)); 
+    }
+  |
+  	LOOKAHEAD(2)
+    name=<Word> v=<Str>  
+    { ScannerUtils.dict.put(name.image, v.image); }
+}
+
+/* instruction */
+
+InstructionHandle instruction(MethodGen mg, ArrayList branchInstructions) :
+{
+    InstructionHandle ih = null;
+}
+{
+    ih = simple_instruction(mg, branchInstructions)
+    {
+        return ih;
+    }
+  |
+    ih = complex_instruction(mg, branchInstructions)
+    {
+        return ih;
+    }
+}
+
+/*
+ Various patterns of instruction:
+      instruction [<pattern>]
+*/
+
+InstructionHandle simple_instruction(MethodGen mg, ArrayList branchInstructions) :
+{
+	Token i, n, n1, n2, s1, s2;
+}
+{
+		LOOKAHEAD(3)
+    i=<Word> n1=<Int> n2=<Int>
+    {// used for iinc
+        return InstructionPattern_Int_Int.process(mg, i, n1, n2);
+    }
+  |
+  	LOOKAHEAD(3)
+    i=<Word> n=<Word> n2=<Int>
+    {// used for invokeinterface and multianewarray
+        return InstructionPattern_Word_Int.process(mg, i, n, n2);
+    }
+  |
+  	LOOKAHEAD(3)
+    i=<Word> n1=<Word> n2=<Word>
+    {
+        // used for instructions that take a field and a signature as parameters
+        // (e.g. getstatic, putstatic, getfield, putfield)
+        return InstructionPattern_Word_Word.process(mg, i, n1, n2);
+    }
+  |
+  	LOOKAHEAD(2)
+    i=<Word> n=<Int>
+    {
+        // used for instructions that take an integer parameter
+        //ldc, ldc_w, ldc2_w
+        //aload, astore, bipush, dload, dstore, fload, fstore, iload, istore
+        //lload, lstore, ret, ret_w, sipush
+        return InstructionPattern_Int.process(mg, i, n);
+    }
+  |
+  	LOOKAHEAD(2)
+    i=<Word> n=<Num>
+    {
+        // used for instructions that take an number parameter
+        //ldc, ldc_w, ldc2_w
+        return InstructionPattern_Num.process(mg, i, n);
+    }
+  |
+  	LOOKAHEAD(2)
+    i=<Word> n=<Word>
+    {
+        // used for instructions that take a word as a parameter
+        // branches, newarray, invokemethod
+        return InstructionPattern_Word.process(mg, i, n, branchInstructions);
+    }
+  |
+  	LOOKAHEAD(2)
+    i=<Word> n=<Str>
+    {
+        // used for instructions that take a string parameter
+        //ldc, ldc_w
+        return InstructionPattern_Str.process(mg, i, n);
+    }
+  |
+    i=<Word>
+    { // used for instructions that take no arguments
+        return InstructionPattern_NoParam.process(mg, i);
+    }
+}
+
+/*
+ complex (i.e. multiline) instructions
+      lookupswitch <lookup>
+      tableswitch  <table>
+*/
+
+InstructionHandle complex_instruction(MethodGen mg, ArrayList branchInstructions) :
+{
+    InstructionHandle ih = null;
+}
+{
+    <LOOKUPSWITCH> ih = lookup(mg, branchInstructions) {return ih;}
+  |
+    <TABLESWITCH> ih = table(mg, branchInstructions) {return ih;}
+}
+
+/*
+ lookupswitch
+     <value> : <label>
+     <value> : <label>
+     ...
+     default : <label>
+*/
+
+InstructionHandle lookup(MethodGen mg, ArrayList branchInstructions) :
+{
+    TempSwitch tempSwitch = new TempSwitch();
+    InstructionHandle ih = null;
+}
+{
+  ih = lookup_args(mg, tempSwitch)
+  lookup_list(tempSwitch)
+  lookup_default(tempSwitch)
+  {
+    branchInstructions.add(tempSwitch);
+    return ih;
+  }
+}
+
+InstructionHandle lookup_args(MethodGen mg, TempSwitch tempSwitch) :
+{}
+{
+  <SEP>         /* no arguments to lookupswitch */
+  {
+     InstructionList il = mg.getInstructionList();
+     tempSwitch.ih = il.append(new LOOKUPSWITCH((new int[0]), (new InstructionHandle[0]), null));
+     tempSwitch.type = TempSwitch.LOOKUPSWITCH;
+     return tempSwitch.ih;
+  }
+}
+
+void lookup_list(TempSwitch tempSwitch) :
+{}
+{
+  ( lookup_entry(tempSwitch) )+
+}
+
+void lookup_entry(TempSwitch tempSwitch) :
+{
+	Token i, w;
+}
+{
+  i=<Int> <COLON> w=<Word> <SEP>
+  {
+    tempSwitch.match.add(new Integer(ScannerUtils.convertInt(i.image)));
+    tempSwitch.targets.add(w.image);
+  }
+}
+
+void lookup_default(TempSwitch tempSwitch) :
+{
+	Token w;
+}
+{
+  <DEFAULT_BRANCH> <COLON> w=<Word>
+	{ tempSwitch.defaultTarget = w.image; }
+}
+
+/*
+ tableswitch <low> [<high>]
+     <label>
+     <label>
+     ...
+     default : <label>
+*/
+
+InstructionHandle table(MethodGen mg, ArrayList branchInstructions) :
+{
+    TempSwitch tempSwitch = new TempSwitch();
+    InstructionHandle ih = null;
+}
+{
+  ih = table_args(mg, tempSwitch)
+  table_list(tempSwitch)
+  table_default(tempSwitch)
+  {
+    if(tempSwitch.match.size() == 1){
+        int l = ((Integer)tempSwitch.match.get(0)).intValue();
+        int h = l + tempSwitch.targets.size() - 1;
+        for(int i=l+1; i<=h; i++){
+            tempSwitch.match.add(new Integer(i));
+        }
+    }
+    branchInstructions.add(tempSwitch);
+    return ih;
+  }
+}
+
+InstructionHandle table_args(MethodGen mg, TempSwitch tempSwitch) :
+{
+	Token low, high;
+    InstructionList il = mg.getInstructionList();
+    tempSwitch.type = TempSwitch.TABLESWITCH;
+}
+{
+		LOOKAHEAD(2)
+    low=<Int> <SEP>     /* one argument : the <low> parameter */
+    {
+        tempSwitch.match.add(new Integer(ScannerUtils.convertInt(low.image)));
+        tempSwitch.ih = il.append(new TABLESWITCH((new int[0]), (new InstructionHandle[0]), null));
+        return tempSwitch.ih;
+    }
+  |
+  	LOOKAHEAD(2)
+    low=<Int> high=<Int> <SEP>     /* two arguments : <low> and <high> parameters */
+    {
+        int l, h;
+        l = ScannerUtils.convertInt(low.image);
+        h = ScannerUtils.convertInt(high.image);
+        for(int i=l; i<=h; i++){
+            tempSwitch.match.add(new Integer(i));
+        }
+        tempSwitch.ih = il.append(new TABLESWITCH((new int[0]), (new InstructionHandle[0]), null));
+        return tempSwitch.ih;
+    }
+}
+
+void table_list(TempSwitch tempSwitch) :
+{}
+{
+  ( table_entry(tempSwitch) )+
+}
+
+void table_entry(TempSwitch tempSwitch) :
+{
+	Token w;
+}
+{
+  w=<Word> <SEP>
+  {
+    tempSwitch.targets.add(w.image);
+  }
+}
+
+void table_default(TempSwitch tempSwitch) :
+{
+	Token w;
+}
+{
+  <DEFAULT_BRANCH> <COLON> w=<Word>
+  {
+    tempSwitch.defaultTarget = w.image;
+  }
+}
+
+
+
