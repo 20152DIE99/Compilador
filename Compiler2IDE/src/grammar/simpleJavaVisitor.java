@@ -22,13 +22,6 @@ public interface simpleJavaVisitor<T> extends ParseTreeVisitor<T> {
 	T visitParamCall(@NotNull simpleJavaParser.ParamCallContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link simpleJavaParser#cmdifelse}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCmdifelse(@NotNull simpleJavaParser.CmdifelseContext ctx);
-
-	/**
 	 * Visit a parse tree produced by {@link simpleJavaParser#expr2}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -41,6 +34,13 @@ public interface simpleJavaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBracket(@NotNull simpleJavaParser.BracketContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link simpleJavaParser#cmdif}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCmdif(@NotNull simpleJavaParser.CmdifContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link simpleJavaParser#prog}.
@@ -148,18 +148,18 @@ public interface simpleJavaVisitor<T> extends ParseTreeVisitor<T> {
 	T visitParams(@NotNull simpleJavaParser.ParamsContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link simpleJavaParser#declConst}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDeclConst(@NotNull simpleJavaParser.DeclConstContext ctx);
-
-	/**
 	 * Visit a parse tree produced by {@link simpleJavaParser#FunctionCall}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitFunctionCall(@NotNull simpleJavaParser.FunctionCallContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link simpleJavaParser#declConst}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDeclConst(@NotNull simpleJavaParser.DeclConstContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link simpleJavaParser#print}.
@@ -174,6 +174,13 @@ public interface simpleJavaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMultDiv(@NotNull simpleJavaParser.MultDivContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link simpleJavaParser#cmdelse}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCmdelse(@NotNull simpleJavaParser.CmdelseContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link simpleJavaParser#tipo}.

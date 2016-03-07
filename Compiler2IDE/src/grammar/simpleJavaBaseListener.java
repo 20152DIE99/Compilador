@@ -33,19 +33,6 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterCmdifelse(@NotNull simpleJavaParser.CmdifelseContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitCmdifelse(@NotNull simpleJavaParser.CmdifelseContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
 	@Override public void enterExpr2(@NotNull simpleJavaParser.Expr2Context ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -66,6 +53,19 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitBracket(@NotNull simpleJavaParser.BracketContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterCmdif(@NotNull simpleJavaParser.CmdifContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitCmdif(@NotNull simpleJavaParser.CmdifContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -267,19 +267,6 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterDeclConst(@NotNull simpleJavaParser.DeclConstContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitDeclConst(@NotNull simpleJavaParser.DeclConstContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
 	@Override public void enterFunctionCall(@NotNull simpleJavaParser.FunctionCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -287,6 +274,19 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitFunctionCall(@NotNull simpleJavaParser.FunctionCallContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterDeclConst(@NotNull simpleJavaParser.DeclConstContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitDeclConst(@NotNull simpleJavaParser.DeclConstContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -313,6 +313,19 @@ public class simpleJavaBaseListener implements simpleJavaListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitMultDiv(@NotNull simpleJavaParser.MultDivContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterCmdelse(@NotNull simpleJavaParser.CmdelseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitCmdelse(@NotNull simpleJavaParser.CmdelseContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

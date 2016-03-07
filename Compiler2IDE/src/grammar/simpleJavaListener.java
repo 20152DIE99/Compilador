@@ -23,17 +23,6 @@ public interface simpleJavaListener extends ParseTreeListener {
 	void exitParamCall(@NotNull simpleJavaParser.ParamCallContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link simpleJavaParser#cmdifelse}.
-	 * @param ctx the parse tree
-	 */
-	void enterCmdifelse(@NotNull simpleJavaParser.CmdifelseContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link simpleJavaParser#cmdifelse}.
-	 * @param ctx the parse tree
-	 */
-	void exitCmdifelse(@NotNull simpleJavaParser.CmdifelseContext ctx);
-
-	/**
 	 * Enter a parse tree produced by {@link simpleJavaParser#expr2}.
 	 * @param ctx the parse tree
 	 */
@@ -54,6 +43,17 @@ public interface simpleJavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBracket(@NotNull simpleJavaParser.BracketContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link simpleJavaParser#cmdif}.
+	 * @param ctx the parse tree
+	 */
+	void enterCmdif(@NotNull simpleJavaParser.CmdifContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link simpleJavaParser#cmdif}.
+	 * @param ctx the parse tree
+	 */
+	void exitCmdif(@NotNull simpleJavaParser.CmdifContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link simpleJavaParser#prog}.
@@ -221,17 +221,6 @@ public interface simpleJavaListener extends ParseTreeListener {
 	void exitParams(@NotNull simpleJavaParser.ParamsContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link simpleJavaParser#declConst}.
-	 * @param ctx the parse tree
-	 */
-	void enterDeclConst(@NotNull simpleJavaParser.DeclConstContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link simpleJavaParser#declConst}.
-	 * @param ctx the parse tree
-	 */
-	void exitDeclConst(@NotNull simpleJavaParser.DeclConstContext ctx);
-
-	/**
 	 * Enter a parse tree produced by {@link simpleJavaParser#FunctionCall}.
 	 * @param ctx the parse tree
 	 */
@@ -241,6 +230,17 @@ public interface simpleJavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunctionCall(@NotNull simpleJavaParser.FunctionCallContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link simpleJavaParser#declConst}.
+	 * @param ctx the parse tree
+	 */
+	void enterDeclConst(@NotNull simpleJavaParser.DeclConstContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link simpleJavaParser#declConst}.
+	 * @param ctx the parse tree
+	 */
+	void exitDeclConst(@NotNull simpleJavaParser.DeclConstContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link simpleJavaParser#print}.
@@ -263,6 +263,17 @@ public interface simpleJavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMultDiv(@NotNull simpleJavaParser.MultDivContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link simpleJavaParser#cmdelse}.
+	 * @param ctx the parse tree
+	 */
+	void enterCmdelse(@NotNull simpleJavaParser.CmdelseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link simpleJavaParser#cmdelse}.
+	 * @param ctx the parse tree
+	 */
+	void exitCmdelse(@NotNull simpleJavaParser.CmdelseContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link simpleJavaParser#tipo}.

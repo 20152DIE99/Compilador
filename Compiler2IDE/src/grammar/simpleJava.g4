@@ -56,13 +56,16 @@ comandos: atribuicao SCOLON
         | declReturn SCOLON
         | print SCOLON
         | read SCOLON
-        | cmdifelse
+        | cmdif (cmdelse)?
         | cmdfor
         | cmdwhile
         ;
 
 
-cmdifelse: TIF OB expr2 CB OCB comandos* CCB (TELSE OCB comandos* CCB)?
+cmdif: TIF OB expr2 CB OCB comandos* CCB
+     ;
+
+cmdelse: TELSE OCB comandos* CCB
       ;
           
 cmdfor: TFOR OB ID EQUALS INT COLON INT (TSTEP SUB?INT)? CB OCB (comandos|TEXIT)* CCB

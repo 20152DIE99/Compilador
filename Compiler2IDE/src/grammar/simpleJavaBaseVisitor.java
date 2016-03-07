@@ -29,14 +29,6 @@ public class simpleJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.
 	 */
-	@Override public T visitCmdifelse(@NotNull simpleJavaParser.CmdifelseContext ctx) { return visitChildren(ctx); }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 */
 	@Override public T visitExpr2(@NotNull simpleJavaParser.Expr2Context ctx) { return visitChildren(ctx); }
 
 	/**
@@ -46,6 +38,14 @@ public class simpleJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * {@link #visitChildren} on {@code ctx}.
 	 */
 	@Override public T visitBracket(@NotNull simpleJavaParser.BracketContext ctx) { return visitChildren(ctx); }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 */
+	@Override public T visitCmdif(@NotNull simpleJavaParser.CmdifContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -173,7 +173,7 @@ public class simpleJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.
 	 */
-	@Override public T visitDeclConst(@NotNull simpleJavaParser.DeclConstContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFunctionCall(@NotNull simpleJavaParser.FunctionCallContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -181,7 +181,7 @@ public class simpleJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.
 	 */
-	@Override public T visitFunctionCall(@NotNull simpleJavaParser.FunctionCallContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDeclConst(@NotNull simpleJavaParser.DeclConstContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -198,6 +198,14 @@ public class simpleJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * {@link #visitChildren} on {@code ctx}.
 	 */
 	@Override public T visitMultDiv(@NotNull simpleJavaParser.MultDivContext ctx) { return visitChildren(ctx); }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 */
+	@Override public T visitCmdelse(@NotNull simpleJavaParser.CmdelseContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
