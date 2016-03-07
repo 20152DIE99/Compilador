@@ -41,7 +41,7 @@ import semantico.symbols.ValuedSymbol;
 import semantico.symbols.VariableSymbol;
 
 public class DefPhaseSimpleJava extends simpleJavaBaseListener {
-	private final boolean debug = true; 
+	private final boolean debug = false; 
 	ParseTreeProperty<Scope> scopes = new ParseTreeProperty<Scope>();
 	ParseTreeProperty<Type> typeChecker = new ParseTreeProperty<Type>(); 
 	HashMap<String, Object> memory = new HashMap<String, Object>();
@@ -95,7 +95,6 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 		CodeGen.gerador();		
 	}
 	
-	//TODO
 	public String mangleName(ParamsContext paramCtx, DeclFuncoesContext funCtx){
 		String funName = funCtx.ID().getText();	
 		Type tipoParam;
@@ -113,8 +112,6 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 		int typeTokenType = ctx.tipo().start.getType();
 		Type tipo = getType(typeTokenType);
 		
-		//TODO testar o tipo de token, typeErr
-		//TODO mangle no name
 		FunctionSymbol function = new FunctionSymbol(name, tipo, currentScope);
 		currentScope.define(function);
 		this.saveScope(ctx, function);
@@ -136,10 +133,15 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 				currentScope = currentScope.getEnclosingScope();
 				sym.setType(getTypeFromChecker(ctx.tipo()));
 			}else{
-				ide.printError(CompileError.overLoadingErr(oldFunName, ctx.start.getLine()));
-				this.scopes.removeFrom(ctx);
-				currentScope = globals;
-				globals.remove(oldFunName);
+				if(sym == symb){
+					sym.setType(getTypeFromChecker(ctx.tipo()));
+					currentScope = currentScope.getEnclosingScope();
+				}else{
+					ide.printError(CompileError.overLoadingErr(oldFunName, ctx.start.getLine()));
+					this.scopes.removeFrom(ctx);
+					currentScope = globals;
+					globals.remove(oldFunName);					
+				}
 			}				
 		}		
 	}
@@ -444,7 +446,7 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 			}	
 		}
 		if(ctx.chamadaFuncoes() != null){
-			//TODO
+			this.addTypeToChecker(ctx, getTypeFromChecker(ctx.chamadaFuncoes()));
 		}
 	}
 	
@@ -560,7 +562,6 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 					ctx.start.getLine(), ctx.ID().getText(),typeParams.toString()));
 		}else{
 			addTypeToChecker(ctx, symb.getType());
-			System.err.println(symb.getType());
 		}
 	}
 	
@@ -598,10 +599,7 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 				if(symb instanceof VariableSymbol){
 					//checa se o parametro e variavel
 //					Type tipo = symb.getType();
-					//TODO fazer gera��o de codigo para leitura.
-					System.out.println("Executar read aqui");
 				}
-				//TODO caso seja constante.
 				if(symb instanceof ConstantSymbol){
 					//� uma constante,emite mensagem de erro
 					ide.printError(SemanticError.errorREADIOConstante(
@@ -619,7 +617,6 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 
 	@Override
 	public void exitCmdfor(CmdforContext ctx) {
-		// TODO Auto-generated method stub
 		String varControle = ctx.ID().getText();
 		int valorInicial = Integer.parseInt(ctx.INT(0).getText());
 		int valorFinal = Integer.parseInt(ctx.INT(1).getText());
