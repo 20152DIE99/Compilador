@@ -1,0 +1,42 @@
+Teste 01
+
+class teste;
+int CONS = 10;
+float C2 = 10.5;
+string ST = "lol";
+fatorial(int a, float b) : int {
+	int C_1 = 10;
+	var e_1 : int;
+	return (0);
+}
+fatorial(int z, int d) : int {
+	int F_1 = 10;
+	var G_1 : int;
+	return (0);
+}
+main ( ){
+	fatorial(1,1);
+}
+____________
+
+Teste 02
+
+class teste;
+var fatorial_I_I : int;
+int CONS = 10;
+float C2 = 10.5;
+string ST = "lol";
+fatorial(int a, float b) : int {
+	int C_1 = 10;
+	var e_1 : int;
+	return (0);
+}
+fatorial(int z, int d) : int {
+	int F_1 = 10;
+	var G_1 : int;
+	return (0);
+}
+main ( ){
+	fatorial(1,1);
+}
+____________

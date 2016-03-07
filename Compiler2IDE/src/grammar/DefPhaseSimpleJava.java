@@ -1,11 +1,9 @@
 package grammar;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -28,6 +26,7 @@ import grammar.simpleJavaParser.InicAttribContext;
 import grammar.simpleJavaParser.InicValContext;
 import grammar.simpleJavaParser.IntContext;
 import grammar.simpleJavaParser.MultDivContext;
+import grammar.simpleJavaParser.ParamCallContext;
 import grammar.simpleJavaParser.ParamsContext;
 import grammar.simpleJavaParser.ProgContext;
 import grammar.simpleJavaParser.ReadContext;
@@ -40,7 +39,6 @@ import semantico.symbols.FunctionSymbol;
 import semantico.symbols.Symbol;
 import semantico.symbols.ValuedSymbol;
 import semantico.symbols.VariableSymbol;
-import sun.org.mozilla.javascript.optimizer.Codegen;
 
 public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 	private final boolean debug = true; 
@@ -104,7 +102,7 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 		for ( TipoContext tipo : paramCtx.tipo()) {
 			tipoParam = getType(tipo.start.getType());
 			if(tipoParam != Type.INVALID) 
-				funName = funName + "_" + tipoParam.toString().charAt(0);			
+				funName = funName + "$" + tipoParam.toString().charAt(0);			
 		}
 		return funName;
 	}
@@ -136,6 +134,7 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 				globals.updateSymbolTable(funName, oldFunName);
 				System.out.println(currentScope);
 				currentScope = currentScope.getEnclosingScope();
+				sym.setType(getTypeFromChecker(ctx.tipo()));
 			}else{
 				ide.printError(CompileError.overLoadingErr(oldFunName, ctx.start.getLine()));
 				this.scopes.removeFrom(ctx);
@@ -549,12 +548,40 @@ public class DefPhaseSimpleJava extends simpleJavaBaseListener {
 	public void exitChamadaFuncoes(ChamadaFuncoesContext ctx) {
 		String funName = ctx.ID().getText();
 		ArrayList<Type> typeParams = new ArrayList<Type>();
-		for (ParseTree child : ctx.children) {
-			System.out.println(child.getText());
+		Type tipo;
+		for (ParamCallContext param : ctx.paramCall()) {
+			tipo = this.getTypeFromChecker(param);
+			typeParams.add(tipo);
+			funName = funName +"$"+tipo.toString().charAt(0);
 		}
 		Symbol symb = currentScope.resolveCurrentScope(funName);
+		if (symb == null) {
+			ide.printError(CompileError.funCall(
+					ctx.start.getLine(), ctx.ID().getText(),typeParams.toString()));
+		}else{
+			addTypeToChecker(ctx, symb.getType());
+			System.err.println(symb.getType());
+		}
 	}
 	
+	
+	
+	@Override
+	public void exitParamCall(ParamCallContext ctx) {
+		if (ctx.STR() != null) {
+			this.addTypeToChecker(ctx, Type.STRING);
+		}
+		if(ctx.BOOL() != null){
+			this.addTypeToChecker(ctx, Type.BOOLEAN);
+		}
+		if(ctx.expr() != null){
+			this.addTypeToChecker(ctx, this.getTypeFromChecker(ctx.expr()));
+		}
+		if(ctx.expr2() != null){
+			//TODO
+		}
+	}
+
 	public void exitRead(ReadContext ctx) {
 		ctx.ID();
 		for (TerminalNode id : ctx.ID()) {

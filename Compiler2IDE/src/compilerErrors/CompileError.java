@@ -32,4 +32,11 @@ public class CompileError {
 				+ "converter \"%s\" para \"%s\".",line, tipoAttr.toLowerCase(),
 				tipoVar.toLowerCase());
 	}
+
+	public static String funCall(int line, String funName, String params) {
+		return String.format(
+				"CompileErr.Linha-%d: Não existe declaração da função \"%s\" "
+				+ "para os parametros: \"%s\".",line, funName,
+				params.toLowerCase());
+	}
 }
