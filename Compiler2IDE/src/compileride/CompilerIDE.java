@@ -30,6 +30,7 @@ import org.fife.ui.rsyntaxtextarea.*;
 
 import grammar.DefPhaseSimpleJava;
 import grammar.simpleJavaErrorListener;
+import grammar.simpleJavaGenerateCode;
 import grammar.simpleJavaLexer;
 import grammar.simpleJavaParser;
 
@@ -304,6 +305,8 @@ public class CompilerIDE extends JFrame implements ActionListener {
 	        
 	        DefPhaseSimpleJava def = new DefPhaseSimpleJava(this, parser);
 	        walker.walk(def, tree);
+	        simpleJavaGenerateCode gc = new simpleJavaGenerateCode();
+	        walker.walk(gc, tree);
 	        if(showTreeI.isSelected()){
 		        printResults("Parse Tree:\n\n");
 		        printResults(tree.toStringTree(parser));
